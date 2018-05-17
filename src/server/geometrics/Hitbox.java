@@ -13,4 +13,18 @@ public class Hitbox {
         this.height = height;
         this.offset = offset;
     }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public Vector2 getOffset() {
+        return offset;
+    }
+    
+    
 }
