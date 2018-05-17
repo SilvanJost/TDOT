@@ -7,6 +7,7 @@ import server.game.entities.Player;
 import server.net.Connection;
 import server.net.PacketHandler;
 import server.net.packets.AddPlayerPacket;
+import server.net.packets.SetWorldPacket;
 import server.net.packets.UpdatePlayerPacket;
 import server.utils.Vector2;
 
@@ -37,6 +38,9 @@ public class Game {
 			
 			conn.send(packet);
 		}
+		
+		SetWorldPacket packet = (SetWorldPacket) PacketHandler.buildPacket(4, null, "1");
+		conn.send(packet);
 	}
 	
 	public void addPlayer(){
@@ -56,6 +60,8 @@ public class Game {
 		/* 
 		 * testing script, that moves the players, so the client can see, he's getting updates
 		 */
+		
+		
 		
 		for(Player player : players){
 			Vector2 position = player.getPosition();

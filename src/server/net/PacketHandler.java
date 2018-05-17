@@ -6,7 +6,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 import server.net.packets.AddPlayerPacket;
+import server.net.packets.KeyboardInputPacket;
 import server.net.packets.Packet;
+import server.net.packets.SetWorldPacket;
 import server.net.packets.UpdatePlayerPacket;
 
 public class PacketHandler {
@@ -19,6 +21,8 @@ public class PacketHandler {
 		
 		packets[1] = new AddPlayerPacket(01, null, null);
 		packets[2] = new UpdatePlayerPacket(02, null, null);
+		packets[3] = new KeyboardInputPacket(03, null, null);
+		packets[4] = new SetWorldPacket(04, null, null);
 	}
 	
 	public static Packet buildPacket(int id, String senderIP, String data){

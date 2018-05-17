@@ -8,12 +8,13 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import client.assets.Assets;
 import client.entities.Player;
+import client.game.WorldHandler;
 import client.gui.DisplayManager;
 import client.net.ClientSocket;
 import client.net.PacketHandler;
 import client.net.packets.Packet;
-import client.res.Assets;
 import client.utils.Vector2;
 
 public class ClientKernel {
@@ -53,13 +54,14 @@ public class ClientKernel {
 		running = true;
 		
 		Assets.init();
+		WorldHandler.init();
+		PacketHandler.loadPackets();
 		
 		socket = new ClientSocket();
 		socket.connect("localhost", 8888);
 		
 		socket.listen();
 		
-		PacketHandler.loadPackets();
 		
 		float duration = 1000 / FPS;
 		float delta = 0;
@@ -70,7 +72,7 @@ public class ClientKernel {
 		Packet packet = PacketHandler.buildPacket(1, null, "Hello there");
 		socket.send(packet);
 		
-		DisplayManager.createDisplay(800, 600);
+		DisplayManager.createDisplay(1920, 1080);
 		
 		while(running){
 			
@@ -108,6 +110,11 @@ public class ClientKernel {
 		
 		g = (Graphics2D) bs.getDrawGraphics();
 
+		DisplayManager.clearDisplay(g);
+		
+		if(WorldHandler.getCurrentWorld() != 0){
+			WorldHandler.render(g);
+		}
 		
 		for(Player player : players){
 			player.render(g);

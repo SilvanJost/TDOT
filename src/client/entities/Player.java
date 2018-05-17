@@ -2,7 +2,7 @@ package client.entities;
 
 import java.awt.image.BufferedImage;
 
-import client.res.Assets;
+import client.assets.Assets;
 
 public class Player extends Entity{
 

@@ -36,7 +36,7 @@ public class SocketListener implements Runnable{
 					
 					System.out.println(line);
 					int packetID = Integer.parseInt(line.substring(0, 1));
-					String data = line.substring(2);
+					String data = line.substring(1);
 					
 					Packet packet = PacketHandler.buildPacket(packetID, targetIP, data);
 					

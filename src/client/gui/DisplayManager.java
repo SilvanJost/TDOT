@@ -23,6 +23,7 @@ public class DisplayManager {
 		
 		frame.setSize(width, height);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setUndecorated(true);
 		
 		
 		canvas = new Canvas();

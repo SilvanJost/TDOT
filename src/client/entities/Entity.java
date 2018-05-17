@@ -13,8 +13,6 @@ public abstract class Entity {
 	
 	private BufferedImage sprite;
 	
-	private int health;
-	
 	public Entity(BufferedImage sprite){
 		
 		this.sprite = sprite;

@@ -28,9 +28,9 @@ public class UpdatePlayerPacket extends Packet{
 	 @Override
 	public String buildMessage(){
 		
-		this.data = packetID + ","+playerID + "," + position.getX() + "," + position.getY();
+		String message = packetID + "" + playerID + "," + position.getX() + "," + position.getY();
 		
-		return data;
+		return message;
 	}
 	 
 	 public void setPosition(Vector2 position){
