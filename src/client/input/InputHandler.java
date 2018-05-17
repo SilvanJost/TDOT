@@ -9,9 +9,14 @@ public class InputHandler implements KeyListener {
 	private boolean leftKeyPressed = false;
 	private boolean rightKeyPressed = false;
 	
+	private boolean punchKeyPressed = false;
+	private boolean throwKeyPressed = false;
+	private boolean specialKeyPressed = false;
+	
 	@Override
 	public void keyPressed(KeyEvent key) {
 		switch(key.getKeyChar()) {
+		//cases for movement
 		case KeyEvent.VK_W:
 			upKeyPressed = true;
 			break;
@@ -21,6 +26,17 @@ public class InputHandler implements KeyListener {
 		case KeyEvent.VK_D:
 			rightKeyPressed = true;
 			break;
+			
+		//cases for attack
+		case KeyEvent.VK_J:
+			punchKeyPressed = true;
+			break;
+		case KeyEvent.VK_K:
+			throwKeyPressed = true;
+			break;
+		case KeyEvent.VK_L:
+			specialKeyPressed = true;
+			break;
 		default:
 			break;
 		}
@@ -29,6 +45,7 @@ public class InputHandler implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent key) {
 		switch(key.getKeyChar()) {
+		//cases for movement
 		case KeyEvent.VK_W:
 			upKeyPressed = false;
 			break;
@@ -37,6 +54,17 @@ public class InputHandler implements KeyListener {
 			break;
 		case KeyEvent.VK_D:
 			rightKeyPressed = false;
+			break;
+			
+		//cases for attack
+		case KeyEvent.VK_J:
+			punchKeyPressed = false;
+			break;
+		case KeyEvent.VK_K:
+			throwKeyPressed = false;
+			break;
+		case KeyEvent.VK_L:
+			specialKeyPressed = false;
 			break;
 		default:
 			break;
@@ -59,5 +87,17 @@ public class InputHandler implements KeyListener {
 	
 	public boolean isRightPressed() {
 		return rightKeyPressed;
+	}
+	
+	public boolean isPunchPressed() {
+		return punchKeyPressed;
+	}
+	
+	public boolean isThrowPressed() {
+		return throwKeyPressed;
+	}
+	
+	public boolean isSpecialPressed() {
+		return specialKeyPressed;
 	}
 }
