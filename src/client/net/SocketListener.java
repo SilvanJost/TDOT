@@ -23,6 +23,7 @@ public class SocketListener implements Runnable{
 	public void run() {
 		
 		running = true;
+		listen();
 	}
 	
 	private void listen(){
