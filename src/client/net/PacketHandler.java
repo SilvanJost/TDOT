@@ -21,7 +21,6 @@ public class PacketHandler {
 	}
 	
 	public static Packet buildPacket(int id, String senderIP, String data){
-		System.out.println("Building "+id);
 		Packet packet = packets[id];
 		packet.setSenderIP(senderIP);
 		packet.setData(data);

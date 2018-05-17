@@ -4,10 +4,11 @@ import java.util.List;
 
 import server.geometrics.Collider;
 import server.geometrics.Hitbox;
+import server.main.Game;
 import server.utils.Vector2;
 
 public class Entity {
-
+	
 	private Vector2 position;
 	
 	private Vector2 movement;
@@ -23,7 +24,13 @@ public class Entity {
 		
 		boolean hasCollided = false;
 		
-		position.add(movement);
+		if(movement.getY() >= Game.GRAVITY.getY()){
+			movement.setY(movement.getY() - Game.GRAVITY.getY());
+			
+			if(movement.getY() < Game.GRAVITY.getY()){
+				movement.setY(Game.GRAVITY.getY());
+			}
+		}
 		
 		for(Entity e : entities){
 			if(Collider.getCollision(hitbox, e.getHitbox())){

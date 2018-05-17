@@ -17,9 +17,13 @@ public class Game {
 	
 	private int gameID;
 	
+	public static final Vector2 GRAVITY = new Vector2(0, 3);
+	
 	private List<Connection> connections = new ArrayList<Connection>();
 	
 	private List<Player> players = new ArrayList<Player>();
+	
+	
 	
 	public Game(){
 		
@@ -86,7 +90,6 @@ public class Game {
 				packet.setPosition(player.getPosition());
 				packet.setPlayerID(i);
 				
-				System.out.println("Sent packet");
 				conn.send(packet);
 				
 			}
