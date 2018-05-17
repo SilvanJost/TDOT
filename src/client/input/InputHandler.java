@@ -17,7 +17,7 @@ public class InputHandler implements KeyListener {
 	public void keyPressed(KeyEvent key) {
 		switch(key.getKeyChar()) {
 		//cases for movement
-		case KeyEvent.VK_W:
+		case KeyEvent.VK_W: case KeyEvent.VK_SPACE:
 			upKeyPressed = true;
 			break;
 		case KeyEvent.VK_A:
@@ -46,7 +46,7 @@ public class InputHandler implements KeyListener {
 	public void keyReleased(KeyEvent key) {
 		switch(key.getKeyChar()) {
 		//cases for movement
-		case KeyEvent.VK_W:
+		case KeyEvent.VK_W: case KeyEvent.VK_SPACE:
 			upKeyPressed = false;
 			break;
 		case KeyEvent.VK_A:
