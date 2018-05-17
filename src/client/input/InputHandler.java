@@ -27,7 +27,7 @@ public class InputHandler implements KeyListener {
 			rightKeyPressed = true;
 			break;
 			
-		//cases for attack
+		//cases for attacks
 		case KeyEvent.VK_J:
 			punchKeyPressed = true;
 			break;
