@@ -1,5 +1,8 @@
 package server.game.entities;
 
+import java.util.List;
+
+import server.geometrics.Collider;
 import server.geometrics.Hitbox;
 import server.utils.Vector2;
 
@@ -7,12 +10,30 @@ public class Entity {
 
 	private Vector2 position;
 	
+	private Vector2 movement;
+	
 	private Hitbox hitbox;
 	
 	public Entity(Hitbox hitbox){
 		
-		this.hitbox = hitbox;
 		position = new Vector2(0,0);
+	}
+	
+	public void tick(List<Entity> entities){
+		
+		boolean hasCollided = false;
+		
+		position.add(movement);
+		
+		for(Entity e : entities){
+			if(Collider.getCollision(hitbox, e.getHitbox())){
+				hasCollided = true;
+			}
+		}
+		
+		if(hasCollided){
+			position.sub(movement);
+		}
 	}
 	
 	public Entity(){
@@ -29,5 +50,9 @@ public class Entity {
 	
 	public void setPosition(Vector2 position){
 		this.position = position;
+	}
+	
+	public void setMovement(Vector2 movement){
+		this.movement = movement;
 	}
 }
