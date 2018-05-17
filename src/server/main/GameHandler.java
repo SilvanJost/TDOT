@@ -19,6 +19,10 @@ public class GameHandler {
 		
 	}
 	
+	/**
+	 * Adds the connected person to a existing game or creates a new one if no slots are aviable
+	 * @param conn - the connection that joins
+	 */
 	public static synchronized void join(Connection conn){
 		
 		

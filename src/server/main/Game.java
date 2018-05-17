@@ -24,6 +24,9 @@ public class Game {
 		
 	}
 	
+	/*
+	 * When a connection joins, it gets all information sent
+	 */
 	public void join(Connection conn){
 		
 		connections.add(conn);
@@ -62,8 +65,10 @@ public class Game {
 		}
 	}
 	
+	/*
+	 * Synchronizes the clients with the Server
+	 */
 	public void update(){
-
 		
 		for(Connection conn : connections){
 			
@@ -71,10 +76,11 @@ public class Game {
 				
 				Player player = players.get(i);
 				
-				UpdatePlayerPacket packet = (UpdatePlayerPacket) PacketHandler.buildPacket(01, null, null);
+				UpdatePlayerPacket packet = (UpdatePlayerPacket) PacketHandler.buildPacket(02, null, null);
 				packet.setPosition(player.getPosition());
 				packet.setPlayerID(i);
 				
+				System.out.println("Sent packet");
 				conn.send(packet);
 				
 			}

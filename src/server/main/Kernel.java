@@ -37,6 +37,8 @@ public class Kernel {
 					
 				delta = 0;
 			}
+			
+			last = now;
 		}
 	}
 }

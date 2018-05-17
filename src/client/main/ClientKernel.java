@@ -10,10 +10,8 @@ import java.util.List;
 
 import client.entities.Player;
 import client.gui.DisplayManager;
-import client.input.ConsoleListener;
 import client.net.ClientSocket;
 import client.net.PacketHandler;
-import client.net.packets.MessagePacket;
 import client.net.packets.Packet;
 import client.res.Assets;
 import client.utils.Vector2;
@@ -21,11 +19,6 @@ import client.utils.Vector2;
 public class ClientKernel {
 
 	private ClientSocket socket;
-	
-	private BufferedReader reader;
-	
-	private ConsoleListener consoleListener;
-	private Thread consoleListenerThread;
 	
 	private BufferStrategy bs;
 	private Graphics2D g;
@@ -46,6 +39,15 @@ public class ClientKernel {
 		kernel.start();
 	}
 	
+	/*
+	 * Initiates a connection to the server
+	 * 
+	 * Creates a Display
+	 * 
+	 * Starts the gameloop
+	 * 
+	 * Stops clean afterwards
+	 */
 	public void start(){
 		
 		running = true;
@@ -55,14 +57,9 @@ public class ClientKernel {
 		socket = new ClientSocket();
 		socket.connect("localhost", 8888);
 		
-		reader = new BufferedReader(new InputStreamReader(System.in));
+		socket.listen();
 		
 		PacketHandler.loadPackets();
-		
-		consoleListener = new ConsoleListener();
-		
-		consoleListenerThread = new Thread(consoleListener);
-		consoleListenerThread.start();
 		
 		float duration = 1000 / FPS;
 		float delta = 0;
@@ -97,6 +94,11 @@ public class ClientKernel {
 		
 	}
 	
+	/*
+	 * Central render loop
+	 * 
+	 * Creates a BufferStrategy and draws everything to the screen with its Graphics object
+	 */
 	public void render(){
 		if(bs == null){
 			DisplayManager.getCanvas().createBufferStrategy(2);
@@ -113,10 +115,11 @@ public class ClientKernel {
 		
 		bs.show();
 	}
-	
+	/*
+	 * Stops the program and cleans up
+	 */
 	public void stop(){
 		
-		consoleListener.stop();
 		DisplayManager.destroyDispaly();
 	}
 	

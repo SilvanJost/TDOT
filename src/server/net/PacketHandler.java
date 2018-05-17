@@ -7,6 +7,7 @@ import java.util.Date;
 
 import server.net.packets.AddPlayerPacket;
 import server.net.packets.Packet;
+import server.net.packets.UpdatePlayerPacket;
 
 public class PacketHandler {
 
@@ -17,6 +18,7 @@ public class PacketHandler {
 		packets = new Packet[32];
 		
 		packets[1] = new AddPlayerPacket(01, null, null);
+		packets[2] = new UpdatePlayerPacket(02, null, null);
 	}
 	
 	public static Packet buildPacket(int id, String senderIP, String data){

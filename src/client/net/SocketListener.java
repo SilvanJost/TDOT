@@ -16,7 +16,6 @@ public class SocketListener implements Runnable{
 	public SocketListener(BufferedReader reader, String targetIP){
 		
 		this.reader = reader;
-		this.targetIP = targetIP;
 	}
 
 	@Override
@@ -31,9 +30,11 @@ public class SocketListener implements Runnable{
 		try{
 			String line;
 			while(running){
+				
 				line = reader.readLine();
 				if(line != null){
 					
+					System.out.println(line);
 					int packetID = Integer.parseInt(line.substring(0, 1));
 					String data = line.substring(2);
 					

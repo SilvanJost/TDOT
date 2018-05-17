@@ -46,6 +46,7 @@ public class ClientSocket {
 	
 	public void listen(){
 		
+		listener = new SocketListener(reader, socket.getRemoteSocketAddress().toString());
 		listenerThread = new Thread(listener);
 		listenerThread.start();
 	}

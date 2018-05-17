@@ -20,6 +20,9 @@ public class Connection {
 	
 	private Thread listenerThread;
 	
+	private int gameID;
+	private int playerID;
+	
 	public Connection(Socket client){
 		this.client = client;
 		
@@ -61,6 +64,14 @@ public class Connection {
 		writer.println(message);
 		
 		writer.flush();
+	}
+	
+	public void setGameID(int gameID){
+		this.gameID = gameID;
+	}
+	
+	public void setPlayerID(int playerID){
+		this.playerID = playerID;
 	}
 }
 
