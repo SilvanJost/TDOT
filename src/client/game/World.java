@@ -43,7 +43,7 @@ public class World {
 		}
 	}
 	
-	public String getNmae(){
+	public String getName(){
 		return this.name;
 	}
 }

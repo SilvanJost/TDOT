@@ -50,6 +50,7 @@ public class Game {
 	public void addPlayer(){
 		
 		Player player = new Player();
+		player.setPosition(new Vector2(0,800));
 		players.add(player);
 		
 		AddPlayerPacket packet = (AddPlayerPacket) PacketHandler.buildPacket(01, null, null);

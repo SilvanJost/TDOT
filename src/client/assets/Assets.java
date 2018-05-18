@@ -6,7 +6,7 @@ public class Assets {
 
 	private static ImageLoader loader;
 	
-	public static BufferedImage player, skylineBackground;
+	public static BufferedImage player, skylineBackground, skylineGroundStage;
 	
 	public static void init(){
 		
@@ -17,6 +17,8 @@ public class Assets {
 		//START skyline map
 		
 		skylineBackground = loader.loadImage("skylineBackground.png");
+		
+		skylineGroundStage = loader.loadImage("GroundStageGross.png");
 		
 		//END skyline map
 	}
