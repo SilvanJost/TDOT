@@ -20,12 +20,14 @@ public class Connection {
 	
 	private Thread listenerThread;
 	
+	private InputHandler handler;
+	
 	private int gameID;
 	private int playerID;
 	
 	public Connection(Socket client){
 		this.client = client;
-		
+		handler = new InputHandler();
 		/*
 		 * Creating a Reader and Writer for Packet transfer 
 		 * using the given Socket's Input/Output Streams
@@ -72,6 +74,10 @@ public class Connection {
 	
 	public void setPlayerID(int playerID){
 		this.playerID = playerID;
+	}
+	
+	public InputHandler getInputHandler(){
+		return this.handler;
 	}
 }
 
