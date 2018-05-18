@@ -6,21 +6,21 @@ import java.awt.image.BufferedImage;
 
 import client.utils.Vector2;
 
-public abstract class Entity {
+public class Entity {
 
 	private Vector2 position;
 	private int width, height;
 	
 	private BufferedImage sprite;
 	
-	public Entity(BufferedImage sprite){
+	public Entity(BufferedImage sprite,int width, int height){
 		
 		this.sprite = sprite;
 		
 		position = new Vector2(100, 100);
 		
-		width = 100;
-		height = 200;
+		this.width = width;
+		this.height = height;
 	}
 	
 	public void render(Graphics2D g){

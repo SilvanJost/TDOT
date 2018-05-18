@@ -8,6 +8,7 @@ import server.net.Connection;
 import server.net.InputHandler;
 import server.net.PacketHandler;
 import server.net.packets.AddPlayerPacket;
+import server.net.packets.Packet;
 import server.net.packets.SetWorldPacket;
 import server.net.packets.UpdatePlayerPacket;
 import server.utils.Vector2;
@@ -16,9 +17,10 @@ public class Game {
 	
 	public static final int MAX_PLAYERS = 2;
 	
-	private static final int IDLE_STATE = 0;
-	private static final int SELECTION_STATE = 1;
-	private static final int GAME_STATE = 2;
+	public static final int MENU_STATE = 0;
+	public static final int IDLE_STATE = 0;
+	public static final int SELECTION_STATE = 1;
+	public static final int GAME_STATE = 2;
 	
 	public static final int CHAR_APPLI = 0;
 	public static final int CHAR_SYSTEMER = 1;
@@ -61,6 +63,7 @@ public class Game {
 	public void addPlayer(){
 		
 		Player player = new Player();
+		player.setPosition(new Vector2(0,800));
 		players.add(player);
 		
 		AddPlayerPacket packet = (AddPlayerPacket) PacketHandler.buildPacket(01, null, null);
@@ -72,26 +75,45 @@ public class Game {
 	
 	public void tick(){
 		
-		/* 
-		 * testing script, that moves the players, so the client can see, he's getting updates
-		 */
-		
 		if(state == IDLE_STATE){
 			
 			if(connections.size() == MAX_PLAYERS){
 				
+				state = SELECTION_STATE;
 			}
 			
 		}else if(state == SELECTION_STATE){
 			
+			boolean picked = true;
+			
+			for(Connection conn : connections){
+				if(conn.getCharacter() == 0){
+					picked = false;
+				}
+				
+				if(!conn.isActive()){
+					end();
+				}
+			}
+			
+			if(picked){
+				
+				state = GAME_STATE;
+				
+			}
+			
 		}else if(state == GAME_STATE){
 			
+			// TESTING SCRIPT -------------------------
+			 
 			for(Player player : players){
 				Vector2 position = player.getPosition();
 				position.setX(position.getX() + 1);
 				
 				player.setPosition(position);
 			}
+			
+			//----------------------------------------------
 			
 		}
 	}
@@ -123,5 +145,15 @@ public class Game {
 	
 	public Player getPlayer(int id){
 		return players.get(id);
+	}
+	
+	public void end(){
+		
+		for(Connection conn : connections){
+			
+			Packet packet = PacketHandler.buildPacket(6, null, MENU_STATE+"");
+			conn.send(packet);
+		}
+		
 	}
 }

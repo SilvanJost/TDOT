@@ -15,6 +15,7 @@ import client.gui.DisplayManager;
 import client.net.ClientSocket;
 import client.net.PacketHandler;
 import client.net.packets.Packet;
+import client.net.packets.SelectCharacterPacket;
 import client.utils.Vector2;
 
 public class ClientKernel {
@@ -31,7 +32,7 @@ public class ClientKernel {
 	
 	private static int state = MENU_STATE;
 	
-	private ClientSocket socket;
+	private static ClientSocket socket;
 	
 	private BufferStrategy bs;
 	private Graphics2D g;
@@ -142,6 +143,15 @@ public class ClientKernel {
 		DisplayManager.destroyDispaly();
 	}
 	
+	public static void selectCharacter(int character){
+		
+		if(state == SELECTION_STATE){
+			
+			Packet packet = PacketHandler.buildPacket(5, null, character+"");
+			socket.send(packet);
+		}
+	}
+	
 	public static void joinGame(){
 		
 	}
@@ -164,10 +174,8 @@ public class ClientKernel {
 		players.get(playerID).setPosition(position);
 	}
 	
-	public static void selectCharacter(int character){
+	public static void setState(int s){
 		
-		if(state == SELECTION_STATE){
-			
-		}
+		state = s;
 	}
 }

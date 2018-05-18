@@ -8,6 +8,8 @@ import java.util.Date;
 import server.net.packets.AddPlayerPacket;
 import server.net.packets.KeyboardInputPacket;
 import server.net.packets.Packet;
+import server.net.packets.SelectCharacterPacket;
+import server.net.packets.SetStatePacket;
 import server.net.packets.SetWorldPacket;
 import server.net.packets.UpdatePlayerPacket;
 
@@ -19,10 +21,12 @@ public class PacketHandler {
 		
 		packets = new Packet[32];
 		
-		packets[1] = new AddPlayerPacket(01, null, null);
-		packets[2] = new UpdatePlayerPacket(02, null, null);
-		packets[3] = new KeyboardInputPacket(03, null, null);
-		packets[4] = new SetWorldPacket(04, null, null);
+		packets[1] = new AddPlayerPacket(1, null, null);
+		packets[2] = new UpdatePlayerPacket(2, null, null);
+		packets[3] = new KeyboardInputPacket(3, null, null);
+		packets[4] = new SetWorldPacket(4, null, null);
+		packets[5] = new SelectCharacterPacket(5, null, null);
+		packets[6] = new SetStatePacket(6, null, null);
 	}
 	
 	public static Packet buildPacket(int id, String senderIP, String data){

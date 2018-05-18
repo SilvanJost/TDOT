@@ -13,6 +13,8 @@ public class Connection {
 
 	private Socket client;
 	
+	private boolean isActive;
+	
 	private PrintWriter writer;
 	private BufferedReader reader;
 	
@@ -29,6 +31,9 @@ public class Connection {
 	
 	public Connection(Socket client){
 		this.client = client;
+		
+		isActive = true;
+		
 		handler = new InputHandler();
 		/*
 		 * Creating a Reader and Writer for Packet transfer 
@@ -84,6 +89,18 @@ public class Connection {
 	
 	public void setCharacter(int character){
 		this.selectedCharacter = character;
+	}
+	
+	public int getCharacter(){
+		return this.selectedCharacter;
+	}
+	
+	public void terminate(){
+		isActive = false;
+	}
+	
+	public boolean isActive(){
+		return this.isActive;
 	}
 }
 

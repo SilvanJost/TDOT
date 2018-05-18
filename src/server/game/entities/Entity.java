@@ -15,7 +15,7 @@ public class Entity {
 	
 	private Hitbox hitbox;
 	
-	public Entity(Hitbox hitbox){
+	public Entity(){
 		
 		position = new Vector2(0,0);
 	}
@@ -43,10 +43,6 @@ public class Entity {
 		}
 	}
 	
-	public Entity(){
-		position = new Vector2(0,0);
-	}
-	
 	public Vector2 getPosition(){
 		return this.position;
 	}
@@ -62,4 +58,10 @@ public class Entity {
 	public void setMovement(Vector2 movement){
 		this.movement = movement;
 	}
+
+    public void setHitbox(Hitbox hitbox) {
+        this.hitbox = hitbox;
+    }
+	
+	
 }
