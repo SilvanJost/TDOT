@@ -1,5 +1,7 @@
 package server.net.packets;
 
+import server.net.Connection;
+
 public abstract class Packet {
 
 	protected int packetID;
@@ -15,7 +17,7 @@ public abstract class Packet {
 	
 	public abstract Packet getAnswer();
 	
-	public abstract void execute();
+	public abstract void execute(Connection conn);
 	
 	public String buildMessage(){
 		String message = this.packetID + this.data;

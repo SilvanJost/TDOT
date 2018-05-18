@@ -1,5 +1,7 @@
 package server.net.packets;
 
+import server.net.Connection;
+
 public class AddPlayerPacket extends Packet{
 
 	private int playerID;
@@ -16,7 +18,7 @@ public class AddPlayerPacket extends Packet{
 	}
 
 	@Override
-	public void execute() {
+	public void execute(Connection conn) {
 		// TODO Auto-generated method stub
 		
 	}

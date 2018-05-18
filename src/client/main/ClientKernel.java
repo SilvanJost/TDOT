@@ -19,6 +19,12 @@ import client.utils.Vector2;
 
 public class ClientKernel {
 
+	private static final int MENU_STATE = 0;
+	private static final int SELECTION_STATE = 1;
+	private static final int GAME_STATE = 2;
+	
+	private static int state = MENU_STATE;
+	
 	private ClientSocket socket;
 	
 	private BufferStrategy bs;
