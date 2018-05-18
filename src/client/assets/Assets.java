@@ -8,10 +8,9 @@ public class Assets {
 
 	private static ImageLoader loader;
 	
-	public static BufferedImage player, skylineBackground, menuBackground, menuTitle, skylineGroundStage;
-	
-	public static ImageIcon cardAppli, cardSystemer, cardBetriebler;
+	public static BufferedImage player, skylineBackground, menuBackground, menuTitle, skylineGroundStage, skylineHeavenStage;
 
+	public static ImageIcon cardAppli, cardSystemer, cardBetriebler;
 	
 	public static void init(){
 		
@@ -25,6 +24,9 @@ public class Assets {
 		
 		skylineGroundStage = loader.loadImage("GroundStageGross.png");
 		
+		skylineHeavenStage = loader.loadImage("HeavenStageGross.png");
+		
 		//END skyline map
 	}
+	
 }

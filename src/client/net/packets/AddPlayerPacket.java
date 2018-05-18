@@ -13,7 +13,7 @@ public class AddPlayerPacket extends Packet{
 	@Override
 	public void execute() {
 		
-		ClientKernel.addPlayer(new Player());
+		ClientKernel.addPlayer(new Player(0,800));
 		
 	}
 

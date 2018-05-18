@@ -13,11 +13,11 @@ public class Entity {
 	
 	private BufferedImage sprite;
 	
-	public Entity(BufferedImage sprite,int width, int height){
+	public Entity(BufferedImage sprite,int width, int height, int xPosition, int yPosition){
 		
 		this.sprite = sprite;
 		
-		position = new Vector2(100, 100);
+		position = new Vector2(xPosition, yPosition);
 		
 		this.width = width;
 		this.height = height;
