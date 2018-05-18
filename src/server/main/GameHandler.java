@@ -67,6 +67,6 @@ public class GameHandler {
 	}
 	
 	public Game getGame(int id){
-		return games.get(id);
+		return games.get(id );
 	}
 }

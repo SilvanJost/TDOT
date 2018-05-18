@@ -5,7 +5,6 @@ import java.util.List;
 
 import server.game.entities.Player;
 import server.net.Connection;
-import server.net.InputHandler;
 import server.net.PacketHandler;
 import server.net.packets.AddPlayerPacket;
 import server.net.packets.Packet;
