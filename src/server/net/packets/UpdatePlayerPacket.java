@@ -1,5 +1,6 @@
 package server.net.packets;
 
+import server.net.Connection;
 import server.utils.Vector2;
 
 public class UpdatePlayerPacket extends Packet{
@@ -20,7 +21,7 @@ public class UpdatePlayerPacket extends Packet{
 	}
 
 	@Override
-	public void execute() {
+	public void execute(Connection conn) {
 		// TODO Auto-generated method stub
 		
 	}

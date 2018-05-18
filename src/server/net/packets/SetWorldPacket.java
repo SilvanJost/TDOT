@@ -1,5 +1,7 @@
 package server.net.packets;
 
+import server.net.Connection;
+
 public class SetWorldPacket extends Packet{
 
 	public SetWorldPacket(int packetID, String senderIP, String data) {
@@ -14,7 +16,7 @@ public class SetWorldPacket extends Packet{
 	}
 
 	@Override
-	public void execute() {
+	public void execute(Connection conn) {
 		// TODO Auto-generated method stub
 		
 	}

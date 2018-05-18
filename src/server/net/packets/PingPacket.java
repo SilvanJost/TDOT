@@ -1,5 +1,7 @@
 package server.net.packets;
 
+import server.net.Connection;
+
 public class PingPacket extends Packet{
 
 	public PingPacket(int packetID, String senderIP, String data) {
@@ -13,7 +15,7 @@ public class PingPacket extends Packet{
 	}
 
 	@Override
-	public void execute() {
+	public void execute(Connection conn) {
 		System.out.println("Ping");
 		
 	}
