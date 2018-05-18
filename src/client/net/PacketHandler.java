@@ -6,6 +6,7 @@ import client.net.packets.AddPlayerPacket;
 import client.net.packets.KeyboardInputPacket;
 import client.net.packets.MessagePacket;
 import client.net.packets.Packet;
+import client.net.packets.SelectCharacterPacket;
 import client.net.packets.SetWorldPacket;
 import client.net.packets.UpdatePlayerPacket;
 
@@ -18,6 +19,7 @@ public class PacketHandler {
 		packets[2] = new UpdatePlayerPacket(2, null, null);
 		packets[3] = new KeyboardInputPacket(3, null, null);
 		packets[4] = new SetWorldPacket(4, null, null);
+		packets[5] = new SelectCharacterPacket(5, null, null);
 	}
 	
 	public static Packet buildPacket(int id, String senderIP, String data){

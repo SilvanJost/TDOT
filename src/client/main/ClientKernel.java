@@ -23,6 +23,12 @@ public class ClientKernel {
 	private static final int SELECTION_STATE = 1;
 	private static final int GAME_STATE = 2;
 	
+	public static final int CHAR_APPLI = 0;
+	public static final int CHAR_SYSTEMER = 1;
+	public static final int CHAR_BETRIEBLER = 2;
+	
+	public static final Vector2 RESOLUTION = new Vector2(1920, 1080);
+	
 	private static int state = MENU_STATE;
 	
 	private ClientSocket socket;
@@ -78,7 +84,7 @@ public class ClientKernel {
 		Packet packet = PacketHandler.buildPacket(1, null, "Hello there");
 		socket.send(packet);
 		
-		DisplayManager.createDisplay(1920, 1080);
+		DisplayManager.createDisplay(new Vector2(1920, 1080));
 		
 		while(running){
 			
@@ -136,6 +142,14 @@ public class ClientKernel {
 		DisplayManager.destroyDispaly();
 	}
 	
+	public static void joinGame(){
+		
+	}
+	
+	public static void exitToMenu(){
+		
+	}
+	
 	public ClientSocket getClientSocket(){
 		return this.socket;
 	}
@@ -148,5 +162,12 @@ public class ClientKernel {
 	public static void movePlayer(int playerID, Vector2 position){
 		
 		players.get(playerID).setPosition(position);
+	}
+	
+	public static void selectCharacter(int character){
+		
+		if(state == SELECTION_STATE){
+			
+		}
 	}
 }

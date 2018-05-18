@@ -65,4 +65,8 @@ public class GameHandler {
 	public void stop(){
 		running = false;
 	}
+	
+	public Game getGame(int id){
+		return games.get(id);
+	}
 }

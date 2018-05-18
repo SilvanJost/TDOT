@@ -2,11 +2,15 @@ package client.assets;
 
 import java.awt.image.BufferedImage;
 
+import javax.swing.ImageIcon;
+
 public class Assets {
 
 	private static ImageLoader loader;
 	
-	public static BufferedImage player, skylineBackground;
+	public static BufferedImage player, skylineBackground, menuBackground, menuTitle;
+	
+	public static ImageIcon cardAppli, cardSystemer, cardBetriebler;
 	
 	public static void init(){
 		

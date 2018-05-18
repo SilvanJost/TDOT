@@ -4,18 +4,15 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import client.assets.Assets;
 import client.main.ClientKernel;
 
-public class MenuContext extends Context{
+public class WaitingContext extends Context{
 
-	public MenuContext(ClientKernel kernel) {
+	public WaitingContext(ClientKernel kernel) {
 		super(kernel);
 		
 	}
@@ -27,34 +24,34 @@ public class MenuContext extends Context{
 		
 		JPanel panel = DisplayManager.getPanel();
 		
-		JButton playButton = new JButton("Play");
-		playButton.setBounds(900, 450, 150, 120);
-		playButton.addActionListener(new ActionListener(){
+		JButton exitButton = new JButton("Exit to Menu");
+		exitButton.setBounds(1700, 980, 220, 100);
+		exitButton.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				ClientKernel.joinGame();
+
+				ClientKernel.exitToMenu();
 				
 			}
 			
 		});
 		
-		playButton.setVisible(true);
+		exitButton.setVisible(true);
 		
-		panel.add(playButton);
+		panel.add(exitButton);
 		
 	}
 
 	@Override
 	public void tick() {
-		
+
 		
 	}
 
 	@Override
 	public void render(Graphics2D g) {
-
+		
 		g.drawImage(Assets.menuBackground, 0, 0, ClientKernel.RESOLUTION.getX(), ClientKernel.RESOLUTION.getY(), null);
 		
 	}

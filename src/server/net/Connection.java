@@ -22,6 +22,8 @@ public class Connection {
 	
 	private InputHandler handler;
 	
+	private int selectedCharacter;
+	
 	private int gameID;
 	private int playerID;
 	
@@ -78,6 +80,10 @@ public class Connection {
 	
 	public InputHandler getInputHandler(){
 		return this.handler;
+	}
+	
+	public void setCharacter(int character){
+		this.selectedCharacter = character;
 	}
 }
 
