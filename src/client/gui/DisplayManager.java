@@ -35,11 +35,11 @@ public class DisplayManager {
 		canvas = new Canvas();
 	
 		canvas.setSize(new Dimension(width, height));
-		panel.setLayout(null);
 		canvas.setVisible(true);
 		
 		panel = new JPanel();
 		
+		panel.setLayout(null);
 		panel.setSize(width, height);
 		panel.setVisible(true);
 		
