@@ -1,11 +1,12 @@
 package server.net.packets;
 
+import client.net.PacketHandler;
 import server.net.Connection;
 
 public class SelectCharacterPacket extends Packet{
 
-	public SelectCharacterPacket(int packetID, String senderIP, String data) {
-		super(packetID, senderIP, data);
+	public SelectCharacterPacket() {
+		super(PacketHandler.PACKET_SELECT_CHARACTER);
 		
 	}
 

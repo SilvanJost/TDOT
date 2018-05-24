@@ -82,9 +82,6 @@ public class ClientKernel {
 		double last = System.currentTimeMillis();
 		double now;
 		
-		Packet packet = PacketHandler.buildPacket(1, null, "Hello there");
-		socket.send(packet);
-		
 		DisplayManager.createDisplay(new Vector2(1920, 1080));
 		
 		while(running){
@@ -147,7 +144,7 @@ public class ClientKernel {
 		
 		if(state == SELECTION_STATE){
 			
-			Packet packet = PacketHandler.buildPacket(5, null, character+"");
+			Packet packet = PacketHandler.buildPacket(PacketHandler.PACKET_SELECT_CHARACTER, null, character+"");
 			socket.send(packet);
 		}
 	}
@@ -160,8 +157,8 @@ public class ClientKernel {
 		
 	}
 	
-	public ClientSocket getClientSocket(){
-		return this.socket;
+	public static ClientSocket getClientSocket(){
+		return socket;
 	}
 	
 	public static void addPlayer(Player player){

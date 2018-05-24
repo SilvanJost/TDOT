@@ -55,8 +55,12 @@ public class Entity {
 		this.position = position;
 	}
 	
-	public void setMovement(Vector2 movement){
-		this.movement = movement;
+	public void setMovementX(int value){
+		this.movement.setX(value);
+	}
+	
+	public void setMovementY(int value){
+		this.movement.setY(value);
 	}
 
     public void setHitbox(Hitbox hitbox) {

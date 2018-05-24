@@ -2,11 +2,12 @@ package server.net.packets;
 
 import server.main.Game;
 import server.net.Connection;
+import server.net.PacketHandler;
 
 public class SetStatePacket extends Packet{
 
-	public SetStatePacket(int packetID, String senderIP, String data) {
-		super(packetID, senderIP, data);
+	public SetStatePacket() {
+		super(PacketHandler.PACKET_SET_STATE);
 		// TODO Auto-generated constructor stub
 	}
 

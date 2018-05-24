@@ -1,6 +1,7 @@
 package server.net.packets;
 
 import server.net.Connection;
+import server.net.PacketHandler;
 import server.utils.Vector2;
 
 public class UpdatePlayerPacket extends Packet{
@@ -9,8 +10,8 @@ public class UpdatePlayerPacket extends Packet{
 	
 	private Vector2 position;
 	
-	public UpdatePlayerPacket(int packetID, String senderIP, String data) {
-		super(packetID, senderIP, data);
+	public UpdatePlayerPacket() {
+		super(PacketHandler.PACKET_UPDATE_PLAYER);
 		// TODO Auto-generated constructor stub
 	}
 

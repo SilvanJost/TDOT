@@ -5,6 +5,7 @@ import java.util.List;
 
 import server.game.entities.Player;
 import server.net.Connection;
+import server.net.InputHandler;
 import server.net.PacketHandler;
 import server.net.packets.AddPlayerPacket;
 import server.net.packets.Packet;
@@ -50,22 +51,25 @@ public class Game {
 		
 		for(Player player : players){
 			
-			AddPlayerPacket packet = (AddPlayerPacket) PacketHandler.buildPacket(01, null, null);
+			Packet packet = PacketHandler.buildPacket(PacketHandler.PACKET_ADD_PLAYER);
 			
 			conn.send(packet);
 		}
 		
-		SetWorldPacket packet = (SetWorldPacket) PacketHandler.buildPacket(4, null, "1");
+		SetWorldPacket packet = (SetWorldPacket) PacketHandler.buildPacket(PacketHandler.PACKET_SET_WORLD);
+		packet.setWorld(1);
 		conn.send(packet);
 	}
 	
-	public void addPlayer(){
+	public void addPlayer(Connection conn){
 		
 		Player player = new Player();
 		player.setPosition(new Vector2(0,800));
 		players.add(player);
 		
-		AddPlayerPacket packet = (AddPlayerPacket) PacketHandler.buildPacket(01, null, null);
+		conn.setPlayerID(players.indexOf(player));
+		
+		AddPlayerPacket packet = (AddPlayerPacket) PacketHandler.buildPacket(PacketHandler.PACKET_ADD_PLAYER);
 		
 		for(Connection connection : connections){
 			connection.send(packet);
@@ -114,6 +118,23 @@ public class Game {
 			
 			//----------------------------------------------
 			
+			for(Connection conn : connections){
+				
+				InputHandler handler = conn.getInputHandler();
+				
+				players.get(conn.getPlayerID()).setMovementX(0);
+				
+				if(handler.isLeftPressed()){
+					
+					players.get(conn.getPlayerID()).setMovementX(-3);
+				}
+				
+				if(handler.isRightPressed()){
+					
+					players.get(conn.getPlayerID()).setMovementX(3);
+					
+				}
+			}
 		}
 	}
 	

@@ -1,12 +1,13 @@
 package client.net.packets;
 
 import client.main.ClientKernel;
+import client.net.PacketHandler;
 import client.utils.Vector2;
 
 public class UpdatePlayerPacket extends Packet{
 
-	public UpdatePlayerPacket(int packetID, String senderIP, String data) {
-		super(packetID, senderIP, data);
+	public UpdatePlayerPacket() {
+		super(PacketHandler.PACKET_UPDATE_PLAYER);
 	}
 
 	@Override

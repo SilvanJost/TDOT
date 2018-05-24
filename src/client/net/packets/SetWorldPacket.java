@@ -1,11 +1,12 @@
 package client.net.packets;
 
 import client.game.WorldHandler;
+import client.net.PacketHandler;
 
 public class SetWorldPacket extends Packet{
 
-	public SetWorldPacket(int packetID, String senderIP, String data) {
-		super(packetID, senderIP, data);
+	public SetWorldPacket() {
+		super(PacketHandler.PACKET_SET_WORLD);
 		// TODO Auto-generated constructor stub
 	}
 

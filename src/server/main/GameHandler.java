@@ -31,7 +31,7 @@ public class GameHandler {
 			if(games.get(i).getPlayerCount() < Game.MAX_PLAYERS){
 				
 				games.get(i).join(conn);
-				games.get(i).addPlayer();
+				games.get(i).addPlayer(conn);
 				return;
 			}
 		}
@@ -40,7 +40,7 @@ public class GameHandler {
 			
 			Game game = new Game();
 			game.join(conn);
-			game.addPlayer();
+			game.addPlayer(conn);
 			
 			games.add(game);
 			

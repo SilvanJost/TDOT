@@ -1,11 +1,14 @@
 package server.net.packets;
 
 import server.net.Connection;
+import server.net.PacketHandler;
 
 public class SetWorldPacket extends Packet{
 
-	public SetWorldPacket(int packetID, String senderIP, String data) {
-		super(packetID, senderIP, data);
+	private int worldId;
+	
+	public SetWorldPacket() {
+		super(PacketHandler.PACKET_SET_WORLD);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -19,6 +22,18 @@ public class SetWorldPacket extends Packet{
 	public void execute(Connection conn) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public String buildPacket(){
+		
+		data = worldId+"";
+		
+		return this.packetID + data;
+	}
+	
+	public void setWorld(int worldId){
+		
+		this.worldId = worldId;
 	}
 
 }

@@ -2,11 +2,12 @@ package client.net.packets;
 
 import client.entities.Player;
 import client.main.ClientKernel;
+import client.net.PacketHandler;
 
 public class AddPlayerPacket extends Packet{
 
-	public AddPlayerPacket(int packetID, String senderIP, String data) {
-		super(packetID, senderIP, data);
+	public AddPlayerPacket() {
+		super(PacketHandler.PACKET_ADD_PLAYER);
 		// TODO Auto-generated constructor stub
 	}
 

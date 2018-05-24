@@ -1,9 +1,11 @@
 package client.net.packets;
 
+import client.net.PacketHandler;
+
 public class KeyboardInputPacket extends Packet{
 
-	public KeyboardInputPacket(int packetID, String senderIP, String data) {
-		super(packetID, senderIP, data);
+	public KeyboardInputPacket() {
+		super(PacketHandler.PACKET_KEYBOARD_INPUT);
 		
 	}
 

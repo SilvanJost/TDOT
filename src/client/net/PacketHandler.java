@@ -4,22 +4,30 @@ import java.util.Calendar;
 
 import client.net.packets.AddPlayerPacket;
 import client.net.packets.KeyboardInputPacket;
-import client.net.packets.MessagePacket;
 import client.net.packets.Packet;
 import client.net.packets.SelectCharacterPacket;
+import client.net.packets.SetStatePacket;
 import client.net.packets.SetWorldPacket;
 import client.net.packets.UpdatePlayerPacket;
 
 public class PacketHandler {
 
+	public static final int PACKET_ADD_PLAYER = 1;
+	public static final int PACKET_UPDATE_PLAYER = 2;
+	public static final int PACKET_KEYBOARD_INPUT = 3;
+	public static final int PACKET_SET_WORLD = 4;
+	public static final int PACKET_SELECT_CHARACTER = 5;
+	public static final int PACKET_SET_STATE = 6;
+	
 	public static Packet[] packets = new Packet[32];
 	
 	public static void loadPackets(){
-		packets[1] = new AddPlayerPacket(1, null, null);
-		packets[2] = new UpdatePlayerPacket(2, null, null);
-		packets[3] = new KeyboardInputPacket(3, null, null);
-		packets[4] = new SetWorldPacket(4, null, null);
-		packets[5] = new SelectCharacterPacket(5, null, null);
+		packets[PACKET_ADD_PLAYER] = new AddPlayerPacket();
+		packets[PACKET_UPDATE_PLAYER] = new UpdatePlayerPacket();
+		packets[PACKET_KEYBOARD_INPUT] = new KeyboardInputPacket();
+		packets[PACKET_SET_WORLD] = new SetWorldPacket();
+		packets[PACKET_SELECT_CHARACTER] = new SelectCharacterPacket();
+		packets[PACKET_SET_STATE] = new SetStatePacket();
 	}
 	
 	public static Packet buildPacket(int id, String senderIP, String data){
@@ -39,6 +47,6 @@ public class PacketHandler {
 		
 		String time = hours+":"+minutes+":"+seconds;
 		
-		System.out.println("[" + time + "] " + "received package " + packet.getPacketID() + " containing " + packet.getData());
+		System.out.println("[" + time + "] " + "package " + packet.getPacketID() + " containing " + packet.getData());
 	}
 }

@@ -8,11 +8,9 @@ public abstract class Packet {
 	protected String senderIP;
 	protected String data;
 	
-	public Packet(int packetID, String senderIP, String data){
+	public Packet(int packetID){
 		
 		this.packetID = packetID;
-		this.senderIP = senderIP;
-		this.data = data;
 	}
 	
 	public abstract Packet getAnswer();

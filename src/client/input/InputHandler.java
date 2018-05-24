@@ -3,6 +3,11 @@ package client.input;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import client.main.ClientKernel;
+import client.net.PacketHandler;
+import client.net.packets.KeyboardInputPacket;
+import client.net.packets.Packet;
+
 public class InputHandler implements KeyListener {
 
 	private boolean upKeyPressed = false;
@@ -15,6 +20,9 @@ public class InputHandler implements KeyListener {
 	
 	@Override
 	public void keyPressed(KeyEvent key) {
+		
+		boolean check = true;
+		
 		switch(key.getKeyChar()) {
 		//cases for movement
 		case KeyEvent.VK_W: case KeyEvent.VK_SPACE:
@@ -38,12 +46,21 @@ public class InputHandler implements KeyListener {
 			specialKeyPressed = true;
 			break;
 		default:
+			check = false;
 			break;
+		}
+		
+		if(check){
+			
+			registerKey(key.getKeyCode(), true);
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent key) {
+		
+		boolean check = true;
+		
 		switch(key.getKeyChar()) {
 		//cases for movement
 		case KeyEvent.VK_W: case KeyEvent.VK_SPACE:
@@ -67,7 +84,13 @@ public class InputHandler implements KeyListener {
 			specialKeyPressed = false;
 			break;
 		default:
+			check = false;
 			break;
+		}
+		
+		if(check){
+			
+			registerKey(key.getKeyCode(), false);
 		}
 	}
 
@@ -75,6 +98,15 @@ public class InputHandler implements KeyListener {
 	public void keyTyped(KeyEvent key) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void registerKey(int keyId, boolean flag){
+		
+		String data = keyId+","+flag;
+		
+		Packet packet = PacketHandler.buildPacket(PacketHandler.PACKET_KEYBOARD_INPUT, null, data);
+		
+		ClientKernel.getClientSocket().send(packet);
 	}
 
 	public boolean isUpPressed() {

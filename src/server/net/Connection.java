@@ -102,5 +102,9 @@ public class Connection {
 	public boolean isActive(){
 		return this.isActive;
 	}
+	
+	public int getPlayerID(){
+		return this.playerID;
+	}
 }
 

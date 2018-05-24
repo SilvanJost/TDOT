@@ -4,11 +4,12 @@ import com.sun.glass.events.KeyEvent;
 
 import server.net.Connection;
 import server.net.InputHandler;
+import server.net.PacketHandler;
 
 public class KeyboardInputPacket extends Packet{
 	
-	public KeyboardInputPacket(int packetID, String senderIP, String data) {
-		super(packetID, senderIP, data);
+	public KeyboardInputPacket() {
+		super(PacketHandler.PACKET_KEYBOARD_INPUT);
 	}
 	
 	
