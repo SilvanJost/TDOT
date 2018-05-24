@@ -44,8 +44,6 @@ public class SocketListener implements Runnable{
 					
 					Packet packet = PacketHandler.buildPacket(packetID, targetIP, data);
 					
-					PacketHandler.log(packet);
-					
 					packet.execute(connection);
 					Packet answer = packet.getAnswer();
 					if(answer != null){

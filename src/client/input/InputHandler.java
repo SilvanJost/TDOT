@@ -21,76 +21,72 @@ public class InputHandler implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent key) {
 		
-		boolean check = true;
-		
-		switch(key.getKeyChar()) {
+		switch(key.getKeyCode()) {
 		//cases for movement
 		case KeyEvent.VK_W: case KeyEvent.VK_SPACE:
 			upKeyPressed = true;
+			registerKey(key.getKeyCode(), true);
 			break;
 		case KeyEvent.VK_A:
 			leftKeyPressed = true;
+			registerKey(key.getKeyCode(), true);
 			break;
 		case KeyEvent.VK_D:
 			rightKeyPressed = true;
+			registerKey(key.getKeyCode(), true);
 			break;
 			
 		//cases for attacks
 		case KeyEvent.VK_J:
 			punchKeyPressed = true;
+			registerKey(key.getKeyCode(), true);
 			break;
 		case KeyEvent.VK_K:
 			throwKeyPressed = true;
+			registerKey(key.getKeyCode(), true);
 			break;
 		case KeyEvent.VK_L:
 			specialKeyPressed = true;
+			registerKey(key.getKeyCode(), true);
 			break;
 		default:
-			check = false;
 			break;
-		}
-		
-		if(check){
-			
-			registerKey(key.getKeyCode(), true);
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent key) {
 		
-		boolean check = true;
-		
-		switch(key.getKeyChar()) {
+		switch(key.getKeyCode()) {
 		//cases for movement
 		case KeyEvent.VK_W: case KeyEvent.VK_SPACE:
 			upKeyPressed = false;
+			registerKey(key.getKeyCode(), false);
 			break;
 		case KeyEvent.VK_A:
 			leftKeyPressed = false;
+			registerKey(key.getKeyCode(), false);
 			break;
 		case KeyEvent.VK_D:
 			rightKeyPressed = false;
+			registerKey(key.getKeyCode(), false);
 			break;
 			
 		//cases for attack
 		case KeyEvent.VK_J:
 			punchKeyPressed = false;
+			registerKey(key.getKeyCode(), false);
 			break;
 		case KeyEvent.VK_K:
 			throwKeyPressed = false;
+			registerKey(key.getKeyCode(), false);
 			break;
 		case KeyEvent.VK_L:
 			specialKeyPressed = false;
+			registerKey(key.getKeyCode(), false);
 			break;
 		default:
-			check = false;
 			break;
-		}
-		
-		if(check){
-			
-			registerKey(key.getKeyCode(), false);
 		}
 	}
 

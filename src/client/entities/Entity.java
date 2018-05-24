@@ -11,6 +11,13 @@ public class Entity {
 	private Vector2 position;
 	private int width, height;
 	
+	private Vector2 lastPosition;
+	
+	private static final int LEFT = 0;
+	private static final int RIGHT = 1;
+	
+	private int direction = RIGHT;
+	
 	private BufferedImage sprite;
 	
 	public Entity(BufferedImage sprite,int width, int height, int xPosition, int yPosition){
@@ -18,6 +25,7 @@ public class Entity {
 		this.sprite = sprite;
 		
 		position = new Vector2(xPosition, yPosition);
+		lastPosition = new Vector2(0, 0);
 		
 		this.width = width;
 		this.height = height;
@@ -25,7 +33,21 @@ public class Entity {
 	
 	public void render(Graphics2D g){
 		
-		g.drawImage(sprite, position.getX(), position.getY(), width, height, null);
+		if(lastPosition.getX() > position.getX()){
+			
+			direction = LEFT;
+			
+		}else{
+			direction = RIGHT;
+			
+		}
+		
+		if(direction == RIGHT){
+			g.drawImage(sprite, position.getX(), position.getY(), width, height, null);
+		}else{
+			g.drawImage(sprite, position.getX() + width, position.getY(), -width, height, null);
+			//g2.drawImage(image, x + width, y, -width, height, null);
+		}
 	}
 	
 	public void setPosition(Vector2 position){
@@ -34,5 +56,13 @@ public class Entity {
 	
 	public Vector2 getPosition(){
 		return this.position;
+	}
+
+	public Vector2 getLastPosition() {
+		return lastPosition;
+	}
+
+	public void setLastPosition(Vector2 lastPosition) {
+		this.lastPosition = lastPosition;
 	}
 }

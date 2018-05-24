@@ -3,12 +3,13 @@ package server.net.packets;
 import server.net.Connection;
 import server.net.PacketHandler;
 import server.utils.Vector2;
+import server.utils.Vector2f;
 
 public class UpdatePlayerPacket extends Packet{
 
 	private int playerID;
 	
-	private Vector2 position;
+	private Vector2f position;
 	
 	public UpdatePlayerPacket() {
 		super(PacketHandler.PACKET_UPDATE_PLAYER);
@@ -35,8 +36,8 @@ public class UpdatePlayerPacket extends Packet{
 		return message;
 	}
 	 
-	 public void setPosition(Vector2 position){
-		 this.position = position;
+	 public void setPosition(Vector2f vector2f){
+		 this.position = vector2f;
 	 }
 	 
 	 public void setPlayerID(int id){

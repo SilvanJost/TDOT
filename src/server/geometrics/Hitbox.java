@@ -2,6 +2,7 @@ package server.geometrics;
 
 import server.game.entities.Entity;
 import server.utils.Vector2;
+import server.utils.Vector2f;
 
 public class Hitbox {
 
@@ -11,7 +12,7 @@ public class Hitbox {
     private int height;
     private Vector2 offset;
     
-    public Hitbox(Entity e, int width, int height,Vector2 offset) {
+    public Hitbox(Entity e, int width, int height, Vector2 offset) {
     	this.e = e;
         this.width = width;
         this.height = height;
@@ -30,7 +31,7 @@ public class Hitbox {
         return offset;
     }
     
-    public Vector2 getPosition(){
+    public Vector2f getPosition(){
     	return e.getPosition();
     }
 }

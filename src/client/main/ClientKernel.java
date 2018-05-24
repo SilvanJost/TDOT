@@ -12,6 +12,7 @@ import client.assets.Assets;
 import client.entities.Player;
 import client.game.WorldHandler;
 import client.gui.DisplayManager;
+import client.input.InputHandler;
 import client.net.ClientSocket;
 import client.net.PacketHandler;
 import client.net.packets.Packet;
@@ -36,6 +37,8 @@ public class ClientKernel {
 	
 	private BufferStrategy bs;
 	private Graphics2D g;
+	
+	private InputHandler inputHandler;
 	
 	private static List<Player> players = new ArrayList<Player>();
 	
@@ -70,6 +73,8 @@ public class ClientKernel {
 		WorldHandler.init();
 		PacketHandler.loadPackets();
 		
+		inputHandler = new InputHandler();
+		
 		socket = new ClientSocket();
 		socket.connect("localhost", 8888);
 		
@@ -83,6 +88,7 @@ public class ClientKernel {
 		double now;
 		
 		DisplayManager.createDisplay(new Vector2(1920, 1080));
+		DisplayManager.addKeyListener(inputHandler);
 		
 		while(running){
 			
@@ -168,7 +174,10 @@ public class ClientKernel {
 	
 	public static void movePlayer(int playerID, Vector2 position){
 		
-		players.get(playerID).setPosition(position);
+		Player player = players.get(playerID);
+		
+		player.setLastPosition(player.getPosition());
+		player.setPosition(position);
 	}
 	
 	public static void setState(int s){

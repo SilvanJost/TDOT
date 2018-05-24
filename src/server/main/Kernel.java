@@ -11,6 +11,7 @@ public class Kernel {
 	public static void main(String[] args){
 		
 		PacketHandler.loadPackets();
+		WorldHandler.init();
 		
 		ServerConnector conn = new ServerConnector(8888);
 		conn.start();

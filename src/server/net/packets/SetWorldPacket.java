@@ -24,16 +24,9 @@ public class SetWorldPacket extends Packet{
 		
 	}
 	
-	public String buildPacket(){
-		
-		data = worldId+"";
-		
-		return this.packetID + data;
-	}
-	
 	public void setWorld(int worldId){
 		
-		this.worldId = worldId;
+		this.data = Integer.toString(worldId);
 	}
 
 }

@@ -55,4 +55,8 @@ public class InputHandler {
 	public boolean isSpecialPressed() {
 		return specialKeyPressed;
 	}
+	
+	public void setUpPressed(boolean flag){
+		this.upKeyPressed = flag;
+	}
 }

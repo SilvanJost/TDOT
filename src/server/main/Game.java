@@ -3,6 +3,7 @@ package server.main;
 import java.util.ArrayList;
 import java.util.List;
 
+import server.game.entities.Entity;
 import server.game.entities.Player;
 import server.net.Connection;
 import server.net.InputHandler;
@@ -11,7 +12,9 @@ import server.net.packets.AddPlayerPacket;
 import server.net.packets.Packet;
 import server.net.packets.SetWorldPacket;
 import server.net.packets.UpdatePlayerPacket;
+import server.utils.Parser;
 import server.utils.Vector2;
+import server.utils.Vector2f;
 
 public class Game {
 	
@@ -30,7 +33,8 @@ public class Game {
 	
 	private int gameID;
 	
-	public static final Vector2 GRAVITY = new Vector2(0, 3);
+	public static final Vector2f GRAVITY = new Vector2f(0, 1.5F);
+	public static final float FALLING_CAP = 16;
 	
 	private List<Connection> connections = new ArrayList<Connection>();
 	
@@ -58,13 +62,15 @@ public class Game {
 		
 		SetWorldPacket packet = (SetWorldPacket) PacketHandler.buildPacket(PacketHandler.PACKET_SET_WORLD);
 		packet.setWorld(1);
+		System.out.println(packet.buildMessage());
+		
 		conn.send(packet);
 	}
 	
 	public void addPlayer(Connection conn){
 		
 		Player player = new Player();
-		player.setPosition(new Vector2(0,800));
+		player.setPosition(new Vector2f(500,400));
 		players.add(player);
 		
 		conn.setPlayerID(players.indexOf(player));
@@ -107,17 +113,6 @@ public class Game {
 			
 		}else if(state == GAME_STATE){
 			
-			// TESTING SCRIPT -------------------------
-			 
-			for(Player player : players){
-				Vector2 position = player.getPosition();
-				position.setX(position.getX() + 1);
-				
-				player.setPosition(position);
-			}
-			
-			//----------------------------------------------
-			
 			for(Connection conn : connections){
 				
 				InputHandler handler = conn.getInputHandler();
@@ -126,14 +121,25 @@ public class Game {
 				
 				if(handler.isLeftPressed()){
 					
-					players.get(conn.getPlayerID()).setMovementX(-3);
+					players.get(conn.getPlayerID()).setMovementX(-7);
 				}
 				
 				if(handler.isRightPressed()){
 					
-					players.get(conn.getPlayerID()).setMovementX(3);
+					players.get(conn.getPlayerID()).setMovementX(7);
 					
 				}
+				
+				if(handler.isUpPressed()){
+					players.get(conn.getPlayerID()).jump();
+					handler.setUpPressed(false);
+				}
+			}
+			
+			List<Entity> entities = Parser.parsePlayerList(players);
+			
+			for(Player player : players){
+				player.tick(WorldHandler.getWorld(WorldHandler.SKYLINE).getStructures());
 			}
 		}
 	}

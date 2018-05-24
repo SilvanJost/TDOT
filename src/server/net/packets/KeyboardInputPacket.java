@@ -24,7 +24,7 @@ public class KeyboardInputPacket extends Packet{
 		
 		InputHandler handler = conn.getInputHandler();
 		boolean flag = Boolean.parseBoolean(this.data.split(",")[1]);
-		char keyPressed = this.data.split(",")[0].toCharArray()[0];
+		int keyPressed = Integer.parseInt(this.data.split(",")[0]);
 		
 		if(keyPressed == KeyEvent.VK_SPACE || keyPressed == KeyEvent.VK_W){
 			handler.pressKeyUp(flag);

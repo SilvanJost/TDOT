@@ -4,6 +4,7 @@ import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Panel;
+import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -30,7 +31,7 @@ public class DisplayManager {
 		frame.setSize(width, height);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setUndecorated(true);
-		
+		frame.setFocusable(true);
 		
 		canvas = new Canvas();
 	
@@ -67,5 +68,10 @@ public class DisplayManager {
 	
 	public static Canvas getCanvas(){
 		return canvas;
+	}
+	
+	public static void addKeyListener(KeyListener listener){
+		
+		canvas.addKeyListener(listener);
 	}
 }

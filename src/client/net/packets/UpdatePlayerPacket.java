@@ -17,8 +17,8 @@ public class UpdatePlayerPacket extends Packet{
 		
 		int playerID = Integer.parseInt(args[0]);
 		
-		int x = Integer.parseInt(args[1]);
-		int y = Integer.parseInt(args[2]);
+		int x = (int) Float.parseFloat(args[1]);
+		int y = (int) Float.parseFloat(args[2]);
 		
 		Vector2 position = new Vector2(x, y);
 		

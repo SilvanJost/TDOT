@@ -70,7 +70,5 @@ public class ClientSocket {
 		writer.println(message);
 		
 		writer.flush();
-		
-		System.out.println("Packet has been sent");
 	}
 }
