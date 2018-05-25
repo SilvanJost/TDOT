@@ -8,17 +8,17 @@ import client.utils.Vector2;
 
 public class Entity {
 
-	private Vector2 position;
-	private int width, height;
+	protected Vector2 position;
+	protected int width, height;
 	
-	private Vector2 lastPosition;
+	protected Vector2 lastPosition;
 	
-	private static final int LEFT = 0;
-	private static final int RIGHT = 1;
+	public static final int LEFT = 0;
+	public static final int RIGHT = 1;
 	
-	private int direction = RIGHT;
+	protected int direction = RIGHT;
 	
-	private BufferedImage sprite;
+	protected BufferedImage sprite;
 	
 	public Entity(BufferedImage sprite,int width, int height, int xPosition, int yPosition){
 		
@@ -31,13 +31,19 @@ public class Entity {
 		this.height = height;
 	}
 	
+	public void tick(){
+		
+	}
+	
 	public void render(Graphics2D g){
 		
 		if(lastPosition.getX() > position.getX()){
 			
 			direction = LEFT;
 			
-		}else{
+		}
+		
+		if(lastPosition.getX() < position.getX()){
 			direction = RIGHT;
 			
 		}
@@ -46,7 +52,6 @@ public class Entity {
 			g.drawImage(sprite, position.getX(), position.getY(), width, height, null);
 		}else{
 			g.drawImage(sprite, position.getX() + width, position.getY(), -width, height, null);
-			//g2.drawImage(image, x + width, y, -width, height, null);
 		}
 	}
 	

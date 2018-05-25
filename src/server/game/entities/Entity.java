@@ -10,6 +10,11 @@ import server.utils.Vector2f;
 
 public class Entity {
 	
+	protected static final int LEFT = 0;
+	protected static final int RIGHT = 1;
+	
+	protected int direction = LEFT;
+	
 	private Vector2f position;
 	
 	private Vector2f movement;
@@ -104,6 +109,11 @@ public class Entity {
 		}
 	}
 	
+	public void move(float value){
+		
+		movement.setX(value);
+	}
+	
 	public Vector2f getPosition(){
 		return this.position;
 	}
@@ -127,6 +137,4 @@ public class Entity {
     public void setHitbox(Hitbox hitbox) {
         this.hitbox = hitbox;
     }
-	
-	
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import server.game.entities.Entity;
 import server.game.entities.Player;
+import server.game.entities.Systemer;
 import server.net.Connection;
 import server.net.InputHandler;
 import server.net.PacketHandler;
@@ -69,11 +70,12 @@ public class Game {
 	
 	public void addPlayer(Connection conn){
 		
-		Player player = new Player();
+		Player player = new Systemer();
 		player.setPosition(new Vector2f(500,400));
 		players.add(player);
 		
 		conn.setPlayerID(players.indexOf(player));
+		player.setConnectionId(connections.indexOf(conn));
 		
 		AddPlayerPacket packet = (AddPlayerPacket) PacketHandler.buildPacket(PacketHandler.PACKET_ADD_PLAYER);
 		
@@ -121,12 +123,12 @@ public class Game {
 				
 				if(handler.isLeftPressed()){
 					
-					players.get(conn.getPlayerID()).setMovementX(-7);
+					players.get(conn.getPlayerID()).move(-7);
 				}
 				
 				if(handler.isRightPressed()){
 					
-					players.get(conn.getPlayerID()).setMovementX(7);
+					players.get(conn.getPlayerID()).move(7);
 					
 				}
 				
@@ -134,12 +136,18 @@ public class Game {
 					players.get(conn.getPlayerID()).jump();
 					handler.setUpPressed(false);
 				}
+				
+				if(handler.isPunchPressed()){
+					players.get(conn.getPlayerID()).punch(players);
+					handler.setPunchPressed(false);
+				}
 			}
 			
 			List<Entity> entities = Parser.parsePlayerList(players);
 			
 			for(Player player : players){
 				player.tick(WorldHandler.getWorld(WorldHandler.SKYLINE).getStructures());
+				player.tickAbilities(WorldHandler.getWorld(WorldHandler.SKYLINE).getStructures(), players);
 			}
 		}
 	}
@@ -159,8 +167,14 @@ public class Game {
 				packet.setPosition(player.getPosition());
 				packet.setPlayerID(i);
 				
-				conn.send(packet);
+					
+				packet.setAnimation(player.getAnimationId());
+					
+				player.setAnimationId(Player.NONE);
 				
+				packet.setHealth(player.getHealth());
+				
+				conn.send(packet);
 			}
 		}
 	}

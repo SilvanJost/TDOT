@@ -10,6 +10,8 @@ public class UpdatePlayerPacket extends Packet{
 	private int playerID;
 	
 	private Vector2f position;
+	private int animation;
+	private int health;
 	
 	public UpdatePlayerPacket() {
 		super(PacketHandler.PACKET_UPDATE_PLAYER);
@@ -31,12 +33,28 @@ public class UpdatePlayerPacket extends Packet{
 	 @Override
 	public String buildMessage(){
 		
-		String message = packetID + "" + playerID + "," + position.getX() + "," + position.getY();
+		String message = packetID + "" + playerID + "," + position.getX() + "," + position.getY() + "," + animation + "," + health;
 		
 		return message;
 	}
 	 
-	 public void setPosition(Vector2f vector2f){
+	 public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
+	public int getAnimation() {
+		return animation;
+	}
+
+	public void setAnimation(int animation) {
+		this.animation = animation;
+	}
+
+	public void setPosition(Vector2f vector2f){
 		 this.position = vector2f;
 	 }
 	 

@@ -59,4 +59,8 @@ public class InputHandler {
 	public void setUpPressed(boolean flag){
 		this.upKeyPressed = flag;
 	}
+	
+	public void setPunchPressed(boolean flag){
+		this.punchKeyPressed = flag;
+	}
 }

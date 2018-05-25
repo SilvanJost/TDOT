@@ -109,7 +109,9 @@ public class ClientKernel {
 	}
 	
 	public void tick(){
-		
+		for(Player player : players){
+			player.tick();
+		}
 	}
 	
 	/*
@@ -178,6 +180,10 @@ public class ClientKernel {
 		
 		player.setLastPosition(player.getPosition());
 		player.setPosition(position);
+	}
+	
+	public static Player getPlayer(int playerID){
+		return players.get(playerID);
 	}
 	
 	public static void setState(int s){
