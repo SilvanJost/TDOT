@@ -127,19 +127,4 @@ public class Appi extends Player{
 			hasBueno = false;
 		}
 	}
-
-	@Override
-	public void dealDamage(int damage) {
-		
-		if(hasFirewall){
-			
-			this.health -= (int) (damage / 2);
-			
-		}else{
-			
-			this.health -= damage;
-		}
-	}
-
-	
 }
