@@ -15,24 +15,28 @@ public class UpdateEntityPacket extends Packet{
 
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
-			String[] args = data.split(",");
+		ClientKernel.clearEntities();
+		
+		String[] entities = data.split("/");
+		
+		for(String entity : entities){
 				
+			String[] args = entity.split(",");
+					
 			int entityId = Integer.parseInt(args[0]);
-				
+						
 			int x = (int) Float.parseFloat(args[1]);
 			int y = (int) Float.parseFloat(args[2]);
-				
+						
 			Entity e;
-				
-			switch(entityId){
-				case ClientKernel.ENTITY_BUENO:
-					e = new Entity(Assets.bueno, 60, 60, x, y);
-				default:
-					e = new Entity(Assets.keyboard, 60, 30, x, y);
+			
+			if(entityId == ClientKernel.ENTITY_BUENO){
+				e = new Entity(Assets.bueno, 60, 60, x, y);
+			}else{
+				e = new Entity(Assets.keyboard, 60, 30, x, y);
 			}
-				
+						
 			ClientKernel.addEntity(e);
+		}
 	}
-	
 }

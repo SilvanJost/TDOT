@@ -9,6 +9,8 @@ public class UpdateEntityPacket extends Packet{
 
 	private int entityID;
 	
+	private int entities;
+	
 	private Vector2f position;
 	
 	public UpdateEntityPacket() {
@@ -27,20 +29,23 @@ public class UpdateEntityPacket extends Packet{
 		// TODO Auto-generated method stub
 		
 	}
-
-	 @Override
-	public String buildMessage(){
-		
-		String message = packetID + "" + entityID + "," + position.getX() + "," + position.getY();
-		
-		return message;
-	}
 	 
-	public void setPosition(Vector2f vector2f){
-		 this.position = vector2f;
+	 public void addEntity(int entityID, Vector2f position){
+		 
+		 if(data == null){
+			 data = "";
+		 }
+		 
+		 data += entityID + "," + position.getX() + "," + position.getY()+"/";
+		 entities ++;
 	 }
 	 
-	 public void setEntityID(int id){
-		 this.entityID = id;
+	 public int getLength(){
+		 return this.entities;
+	 }
+	 
+	 public void clear(){
+		 data = "";
+		 entities = 0;
 	 }
 }

@@ -63,7 +63,7 @@ public class Player extends Entity{
 			}
 		}
 		currentAnimation.tick();
-		//beamAnimation.tick();
+		beamAnimation.tick();
 		
 		currentAnimation.setX(position.getX());
 		currentAnimation.setY(position.getY());
@@ -91,14 +91,14 @@ public class Player extends Entity{
 			g.drawImage(sprite, position.getX() + width, position.getY(), -width, height, null);
 		}
 		
-		/*
+		
 		if(beamAnimation.isActive()){
 			if(direction == RIGHT){
 				g.drawImage(beamAnimation.getFrame(), beamAnimation.getX(), beamAnimation.getY(), beamAnimation.getWidth(), beamAnimation.getHeight(), null);
 			}else{
 				g.drawImage(beamAnimation.getFrame(), beamAnimation.getX() + beamAnimation.getWidth(), beamAnimation.getY(), -beamAnimation.getWidth(), beamAnimation.getHeight(), null);
 			}
-		}*/
+		}
 		
 		g.setColor(Color.RED);
 		g.fillRect(this.position.getX()-20, this.position.getY()-50, 150, 5);
@@ -113,6 +113,7 @@ public class Player extends Entity{
 	}
 	
 	public void castSuper(){
+		System.out.println("reeee");
 		this.currentAnimation = superCast;
 		currentAnimation.run();
 		

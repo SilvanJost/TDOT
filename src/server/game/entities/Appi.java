@@ -59,7 +59,6 @@ public class Appi extends Player{
 			
 			if(direction == RIGHT){
 				beamHitbox = beamHitboxRight;
-				System.out.println("right");
 			}else{
 				beamHitbox = beamHitboxLeft;
 			}
@@ -118,7 +117,9 @@ public class Appi extends Player{
 	public void useSuper(List<Player> players) {
 		
 		if(hasBueno){
-		
+			
+			animationId = SUPER_CAST;
+			
 			superStart = System.currentTimeMillis();
 			isSuperActive = true;
 			canMove = false;

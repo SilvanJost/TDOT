@@ -72,6 +72,7 @@ public class DisplayManager {
 		canvas.setSize(new Dimension(width, height));
 		canvas.setVisible(true);
 		
+		frame.setVisible(true);
 		frame.add(canvas);
 	}
 	
@@ -87,5 +88,9 @@ public class DisplayManager {
 	public static void addKeyListener(KeyListener listener){
 		
 		canvas.addKeyListener(listener);
+	}
+	
+	public static JFrame getFrame(){
+		return frame;
 	}
 }

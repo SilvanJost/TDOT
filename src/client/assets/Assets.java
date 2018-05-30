@@ -19,6 +19,7 @@ public class Assets {
 	public static BufferedImage appiIdle0, appiIdle1;
 	public static BufferedImage appiJump0, appiJump1, appiJump2;
 	public static BufferedImage appiPunch0, appiPunch1;
+	public static BufferedImage appiSpecial0, appiSpecial1;
 	public static BufferedImage appiBeam0, appiBeam1, appiBeam2, appiBeam3, appiBeam4, appiBeam5, appiBeam6, appiBeam7, appiBeam8, appiBeam9;
 
 	public static Animation appiRun;
@@ -102,6 +103,42 @@ public class Assets {
 		
 		appiPunch = new Animation(punchImages, 0.15F, 75, 100);
 		appiPunch.setUntilFinished(true);
+		
+		appiSpecial0 = imageLoader.loadImage("Appi_Special_0.png");
+		appiSpecial1 = imageLoader.loadImage("Appi_Special_1.png");
+		
+		BufferedImage[] appiSpecialImages = new BufferedImage[2];
+		appiSpecialImages[0] = appiSpecial0;
+		appiSpecialImages[1] = appiSpecial1;
+		
+		appiSuper = new Animation(appiSpecialImages, 1.5F, 75, 150);
+		appiSuper.setStayAtLast(true);
+		
+		appiBeam0 = imageLoader.loadImage("Appi_Beam_0.png");
+		appiBeam1 = imageLoader.loadImage("Appi_Beam_1.png");
+		appiBeam2 = imageLoader.loadImage("Appi_Beam_2.png");
+		appiBeam3 = imageLoader.loadImage("Appi_Beam_3.png");
+		appiBeam4 = imageLoader.loadImage("Appi_Beam_4.png");
+		appiBeam5 = imageLoader.loadImage("Appi_Beam_5.png");
+		appiBeam6 = imageLoader.loadImage("Appi_Beam_6.png");
+		appiBeam7 = imageLoader.loadImage("Appi_Beam_7.png");
+		appiBeam8 = imageLoader.loadImage("Appi_Beam_8.png");
+		appiBeam9 = imageLoader.loadImage("Appi_Beam_9.png");
+		
+		BufferedImage[] appiBeamImages = new BufferedImage[10];
+		appiBeamImages[0] = appiBeam0;
+		appiBeamImages[1] = appiBeam1;
+		appiBeamImages[2] = appiBeam2;
+		appiBeamImages[3] = appiBeam3;
+		appiBeamImages[4] = appiBeam4;
+		appiBeamImages[5] = appiBeam5;
+		appiBeamImages[6] = appiBeam6;
+		appiBeamImages[7] = appiBeam7;
+		appiBeamImages[8] = appiBeam8;
+		appiBeamImages[9] = appiBeam9;
+		
+		appiBeam = new Animation(appiBeamImages, 1.5F, 2000, 75);
+		
 		//END APPI
 	}
 	

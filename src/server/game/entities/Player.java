@@ -20,6 +20,7 @@ public abstract class Player extends Entity{
 	protected int animationId;
 
 	protected int health;
+	private int maxHealth;
 	protected int speed;
 	
 	protected Projectile throwable;
@@ -34,6 +35,7 @@ public abstract class Player extends Entity{
 	public Player(int health, int speed, Projectile throwable){
 		
 		this.health = health;
+		this.maxHealth = health;
 		this.speed = speed;
 		this.throwable = throwable;
 	}
@@ -70,6 +72,13 @@ public abstract class Player extends Entity{
 
 	public void dealDamage(int damage) {
 		this.health -= damage;
+		
+		if(health < 1){
+			lives --;
+			position.setX(930);
+			position.setY(100);
+			health = maxHealth;
+		}
 	}
 
 	public int getSpeed() {

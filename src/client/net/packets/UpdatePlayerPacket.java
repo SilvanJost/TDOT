@@ -31,6 +31,8 @@ public class UpdatePlayerPacket extends Packet{
 				
 			if(animation == Player.PUNCH){
 				player.punch();
+			}else if(animation == Player.SUPER_CAST){
+				player.castSuper();
 			}
 		}
 			

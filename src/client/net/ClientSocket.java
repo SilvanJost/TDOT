@@ -34,7 +34,7 @@ public class ClientSocket {
 		while(!connected){*/
 			try {
 				
-				socket.connect(new InetSocketAddress("localhost", 8888));
+				socket.connect(new InetSocketAddress(targetIP, 8888));
 				
 				writer = new PrintWriter(socket.getOutputStream());
 				reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));

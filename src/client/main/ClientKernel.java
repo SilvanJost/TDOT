@@ -58,7 +58,7 @@ public class ClientKernel {
 	
 	private boolean running;
 	
-	private static final int FPS = 30;
+	private static final int FPS = 20;
 	
 	public ClientKernel(){
 		
@@ -105,19 +105,15 @@ public class ClientKernel {
 			now = System.currentTimeMillis();
 			
 			delta += now - last;
-			
+
 			if(delta >= duration){
-				
 				ticks++;
-				
+				System.out.println(1);
 				if(state == GAME_STATE){
-					
+					System.out.println(2);
 					tick();
+					System.out.println(3);
 					render();
-				}
-				
-				if(ticks >5){
-					entities.clear();
 				}
 				
 				delta = 0;
@@ -142,35 +138,40 @@ public class ClientKernel {
 	 * Creates a BufferStrategy and draws everything to the screen with its Graphics object
 	 */
 	public synchronized void render(){
-		
-		if(bs == null){
-			DisplayManager.getCanvas().createBufferStrategy(2);
-			bs = DisplayManager.getCanvas().getBufferStrategy();
+
+		try{
+			if(bs == null){
+				DisplayManager.getCanvas().createBufferStrategy(2);
+				bs = DisplayManager.getCanvas().getBufferStrategy();
+					
+			}
 				
-		}
-			
-		g = (Graphics2D) bs.getDrawGraphics();
-	
-		DisplayManager.clearDisplay(g);
-			
-		if(state == GAME_STATE){
-			if(WorldHandler.getCurrentWorld() != 0){
-				WorldHandler.render(g);
-			}
-			
-			for(Player player : players){
-				player.render(g);
-			}
-			List<Entity> renderEntities = new ArrayList<Entity>();
-			renderEntities.addAll(entities);
-			for(Entity e : renderEntities){
-				e.render(g);
-			}
-		}
+			g = (Graphics2D) bs.getDrawGraphics();
 		
-		context.render(g);
-		
-		bs.show();
+			DisplayManager.clearDisplay(g);
+			if(state == GAME_STATE){
+				if(WorldHandler.getCurrentWorld() != 0){
+					WorldHandler.render(g);
+				}
+				
+				for(Player player : players){
+					player.render(g);
+				}
+				
+				List<Entity> renderEntities = new ArrayList<Entity>();
+				renderEntities.addAll(entities);
+				for(Entity e : renderEntities){
+					e.render(g);
+				}
+			}
+			
+			context.render(g);
+			
+			bs.show();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	/*
 	 * Stops the program and cleans up
@@ -220,7 +221,7 @@ public class ClientKernel {
 		return players.get(playerID);
 	}
 	
-	public static void setState(int s){
+	public synchronized static void setState(int s){
 		
 		state = s;
 		
@@ -240,12 +241,17 @@ public class ClientKernel {
 				inputHandler = new InputHandler();
 				DisplayManager.addKeyListener(inputHandler);
 				
+				System.out.println("frame reinitialied");
 				break;
 		}
 	}
 	
-	public static void addEntity(Entity e){
+	public synchronized static void addEntity(Entity e){
 		entities.add(e);
+	}
+	
+	public synchronized static void clearEntities(){
+		entities.clear();
 	}
 	
 	public static Entity getEntity(int entityId){

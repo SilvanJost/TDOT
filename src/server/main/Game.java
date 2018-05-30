@@ -244,22 +244,24 @@ public class Game {
 				
 				conn.send(packet);
 				
+				 //UPDATES ENTITIES----------------------------------------------------------------------------
+				UpdateEntityPacket entityPacket = (UpdateEntityPacket) PacketHandler.buildPacket(PacketHandler.PACKET_UPDATE_ENTITY);
+				
 				if(player.getThrowable().isActive()){
-					UpdateEntityPacket entityPacket = (UpdateEntityPacket) PacketHandler.buildPacket(PacketHandler.PACKET_UPDATE_ENTITY);
-					entityPacket.setEntityID(player.getThrowable().getId());
-					entityPacket.setPosition(player.getThrowable().getPosition());
 					
-					conn.send(entityPacket);
+					entityPacket.addEntity(player.getThrowable().getId(), player.getThrowable().getPosition());
 				}
 				
 				for(Entity bueno : buenos){
 					
-					UpdateEntityPacket entityPacket = (UpdateEntityPacket) PacketHandler.buildPacket(PacketHandler.PACKET_UPDATE_ENTITY);
-					entityPacket.setEntityID(4);
-					entityPacket.setPosition(bueno.getPosition());
-					
+					entityPacket.addEntity(4, bueno.getPosition());
+				}
+				if(entityPacket.getLength() > 0){
 					conn.send(entityPacket);
 				}
+				
+				entityPacket.clear();
+				//----------------------------------------------------------------------------------------------
 			}
 		}
 	}
