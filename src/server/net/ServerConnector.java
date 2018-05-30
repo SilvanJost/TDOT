@@ -19,6 +19,8 @@ public class ServerConnector extends Thread{
 	private String ip;
 	private int port;
 	
+	private String hostname = "srv-buenofight";
+	
 	private boolean accepting;
 	
 	
@@ -33,8 +35,8 @@ public class ServerConnector extends Thread{
 	public void openConnection(){
 		
 		try {
-			
 			socket = new ServerSocket(8888);
+			//socket = new ServerSocket(8888, 1, InetAddress.getByName(hostname));
 			
 			accepting = true;
 			

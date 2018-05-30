@@ -15,11 +15,14 @@ public class Entity {
 	
 	protected int direction = LEFT;
 	
-	private Vector2f position;
+	protected Vector2f position;
 	
-	private Vector2f movement;
+	private Vector2f movementInput;
+	protected Vector2f movement;
 	
 	private Hitbox hitbox;
+	
+	protected boolean canMove = true;
 	
 	private boolean inAir = true;
 	private boolean doubleJump = true;
@@ -28,68 +31,92 @@ public class Entity {
 		
 		position = new Vector2f(0,0);
 		movement = new Vector2f(0,0);
+		movementInput = new Vector2f(0, 0);
 		
 		hitbox = new Hitbox(this, 75, 150, new Vector2(0, 0));
 	}
 	
 	public void tick(List<Entity> entities){
-
-		boolean hasCollided = false;
 		
-		if(movement.getY() <= Game.FALLING_CAP){
-			
-			movement.setY(movement.getY() + Game.GRAVITY.getY());
-			
-			if(movement.getY() > Game.FALLING_CAP){
-				movement.setY(Game.FALLING_CAP);
+		if(canMove){
+			if(movementInput.getX() != 0){
+				movement.setX(movementInput.getX());
+			}else{
+				movement.setX(movement.getX() / 10 * 9);
 			}
-		}
-		
-		//Move X
-		
-		position.setX(position.getX() + movement.getX());
-		
-		for(Entity e : entities){
-			if(Collider.getCollision(hitbox, e.getHitbox())){
-				hasCollided = true;
-				
+			
+			if(movementInput.getY() != 0){
+				movement.setY(movementInput.getY());
 			}
-		}
-		
-		if(hasCollided){
-			position.setX(position.getX() - movement.getX());
-		}
-		
-		//Move Y
-		
-		hasCollided = false;
-		
-		position.setY(position.getY() + movement.getY());
-		
-		for(Entity e : entities){
-			if(Collider.getCollision(hitbox, e.getHitbox())){
-				hasCollided = true;
+			
+			
+			boolean hasCollided = false;
+			
+			if(movement.getY() <= Game.FALLING_CAP){
 				
-				if(e.getPosition().getY() > this.position.getY()){
-					
-					float difference = e.getPosition().getY() - this.position.getY() - hitbox.getHeight() - hitbox.getOffset().getY();
-					this.position.setY(this.position.getY()+difference);
-					hasCollided = false;
-					
-					inAir = false;
-					doubleJump = true;
-					
-				}else{
-					
-					float difference = e.getPosition().getY() + e.getHitbox().getHeight() - (this.getPosition().getY() + hitbox.getOffset().getY());
-					this.position.setY(this.position.getY()+difference);
-					hasCollided = false;
+				movement.setY(movement.getY() + Game.GRAVITY.getY());
+				
+				if(movement.getY() > Game.FALLING_CAP){
+					movement.setY(Game.FALLING_CAP);
 				}
 			}
-		}
-		
-		if(hasCollided){
-			position.setY(position.getY() - movement.getY());
+			
+			//Move X
+			
+			position.setX(position.getX() + movement.getX());
+			
+			for(Entity e : entities){
+				if(Collider.getCollision(hitbox, e.getHitbox())){
+					hasCollided = true;
+					
+				}
+			}
+			
+			if(hasCollided){
+				position.setX(position.getX() - movement.getX());
+			}
+			
+			//Move Y
+			
+			hasCollided = false;
+			
+			position.setY(position.getY() + movement.getY());
+			
+			for(Entity e : entities){
+				if(Collider.getCollision(hitbox, e.getHitbox())){
+					hasCollided = true;
+					
+					if(e.getPosition().getY() > this.position.getY()){
+						
+						float difference = e.getPosition().getY() - this.position.getY() - hitbox.getHeight() - hitbox.getOffset().getY() -1;
+						this.position.setY(this.position.getY()+difference);
+						hasCollided = false;
+						
+						if(movementInput.getX() == 0){
+							movement.setX(0);
+	
+						}
+						
+						inAir = false;
+						doubleJump = true;
+						
+					}else{
+						
+						float difference = e.getPosition().getY() + e.getHitbox().getHeight() - (this.getPosition().getY() + hitbox.getOffset().getY());
+						this.position.setY(this.position.getY()+difference);
+						hasCollided = false;
+						
+						movement.setY(0);
+					}
+				}
+			}
+			
+			if(hasCollided){
+				position.setY(position.getY() - movement.getY());
+			}
+			
+			movementInput.setX(0);
+			movementInput.setY(0);
 		}
 	}
 	
@@ -97,13 +124,13 @@ public class Entity {
 		if(inAir){
 			if(doubleJump){
 				
-				movement.setY(-25);
+				movementInput.setY(-25);
 				
 				doubleJump = false;
 			}
 		}else{
 			
-			movement.setY(-20);
+			movementInput.setY(-20);
 			
 			inAir = true;
 		}
@@ -111,7 +138,13 @@ public class Entity {
 	
 	public void move(float value){
 		
-		movement.setX(value);
+		movementInput.setX(value);
+		
+		if(value > 0){
+			direction = RIGHT;
+		}else{
+			direction = LEFT;
+		}
 	}
 	
 	public Vector2f getPosition(){
@@ -126,12 +159,12 @@ public class Entity {
 		this.position = position;
 	}
 	
-	public void setMovementX(int value){
-		this.movement.setX(value);
+	public void setMovementX(float value){
+		this.movementInput.setX(value);
 	}
 	
-	public void setMovementY(int value){
-		this.movement.setY(value);
+	public void setMovementY(float value){
+		this.movementInput.setY(value);
 	}
 
     public void setHitbox(Hitbox hitbox) {

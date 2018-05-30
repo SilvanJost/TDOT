@@ -2,16 +2,21 @@ package server.main;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import server.game.entities.Entity;
 import server.game.entities.Player;
-import server.game.entities.Systemer;
+import server.geometrics.Collider;
+import server.geometrics.Hitbox;
+import server.game.entities.Appi;
 import server.net.Connection;
 import server.net.InputHandler;
 import server.net.PacketHandler;
 import server.net.packets.AddPlayerPacket;
 import server.net.packets.Packet;
+import server.net.packets.SetStatePacket;
 import server.net.packets.SetWorldPacket;
+import server.net.packets.UpdateEntityPacket;
 import server.net.packets.UpdatePlayerPacket;
 import server.utils.Parser;
 import server.utils.Vector2;
@@ -30,21 +35,27 @@ public class Game {
 	public static final int CHAR_SYSTEMER = 1;
 	public static final int CHAR_BETRIEBLER = 2;
 	
-	private int state = GAME_STATE;
+	private int state = IDLE_STATE;
+	
+	private Random random;
+	
+	private int buenoChance = 15 * 60;
 	
 	private int gameID;
 	
-	public static final Vector2f GRAVITY = new Vector2f(0, 1.5F);
+	public static final Vector2f GRAVITY = new Vector2f(0, 1.4F);
 	public static final float FALLING_CAP = 16;
 	
 	private List<Connection> connections = new ArrayList<Connection>();
 	
 	private List<Player> players = new ArrayList<Player>();
 	
+	private List<Entity> buenos = new ArrayList<Entity>();
 	
 	
 	public Game(){
 		
+		random = new Random();
 	}
 	
 	/*
@@ -70,7 +81,7 @@ public class Game {
 	
 	public void addPlayer(Connection conn){
 		
-		Player player = new Systemer();
+		Player player = new Appi();
 		player.setPosition(new Vector2f(500,400));
 		players.add(player);
 		
@@ -91,6 +102,15 @@ public class Game {
 			if(connections.size() == MAX_PLAYERS){
 				
 				state = SELECTION_STATE;
+				
+				SetStatePacket setStatePacket = (SetStatePacket) PacketHandler.buildPacket(PacketHandler.PACKET_SET_STATE);
+				setStatePacket.setData(SELECTION_STATE+"");
+				
+				for(Connection conn : connections){
+					
+					conn.send(setStatePacket);
+					
+				}
 			}
 			
 		}else if(state == SELECTION_STATE){
@@ -110,16 +130,26 @@ public class Game {
 			if(picked){
 				
 				state = GAME_STATE;
+				System.out.println("Starting Game "+gameID);
 				
+				SetStatePacket setStatePacket = (SetStatePacket) PacketHandler.buildPacket(PacketHandler.PACKET_SET_STATE);
+				setStatePacket.setData(GAME_STATE+"");
+				
+				for(Connection conn : connections){
+					
+					conn.send(setStatePacket);
+					
+				}
 			}
 			
 		}else if(state == GAME_STATE){
+			
 			
 			for(Connection conn : connections){
 				
 				InputHandler handler = conn.getInputHandler();
 				
-				players.get(conn.getPlayerID()).setMovementX(0);
+				//players.get(conn.getPlayerID()).setMovementX(0);
 				
 				if(handler.isLeftPressed()){
 					
@@ -141,13 +171,51 @@ public class Game {
 					players.get(conn.getPlayerID()).punch(players);
 					handler.setPunchPressed(false);
 				}
+				
+				if(handler.isThrowPressed()){
+					players.get(conn.getPlayerID()).loadToss();
+				}else{
+					players.get(conn.getPlayerID()).toss();
+				}
+				
+				if(handler.isSpecialPressed()){
+					players.get(conn.getPlayerID()).useSuper(players);
+				}
 			}
 			
 			List<Entity> entities = Parser.parsePlayerList(players);
 			
+			for(Entity bueno : buenos){
+				bueno.tick(WorldHandler.getWorld(WorldHandler.SKYLINE).getStructures());
+			}
+			
 			for(Player player : players){
 				player.tick(WorldHandler.getWorld(WorldHandler.SKYLINE).getStructures());
 				player.tickAbilities(WorldHandler.getWorld(WorldHandler.SKYLINE).getStructures(), players);
+				
+				List<Entity> toRemove = new ArrayList<Entity>();
+				
+				for(Entity bueno : buenos){
+					if(Collider.getCollision(player.getHitbox(), bueno.getHitbox())){
+						
+						player.collectBueno();
+						
+						toRemove.add(bueno);
+					}
+				}
+				
+				for(Entity e : toRemove){
+					
+					buenos.remove(e);
+					
+				}
+			}
+			
+			if(random.nextInt(buenoChance) == 0){
+				Entity bueno = new Entity();
+				bueno.setPosition(new Vector2f(random.nextInt(1920), 50));
+				bueno.setHitbox(new Hitbox(bueno, 60, 60, new Vector2(0, 0)));
+				buenos.add(bueno);
 			}
 		}
 	}
@@ -175,6 +243,23 @@ public class Game {
 				packet.setHealth(player.getHealth());
 				
 				conn.send(packet);
+				
+				if(player.getThrowable().isActive()){
+					UpdateEntityPacket entityPacket = (UpdateEntityPacket) PacketHandler.buildPacket(PacketHandler.PACKET_UPDATE_ENTITY);
+					entityPacket.setEntityID(player.getThrowable().getId());
+					entityPacket.setPosition(player.getThrowable().getPosition());
+					
+					conn.send(entityPacket);
+				}
+				
+				for(Entity bueno : buenos){
+					
+					UpdateEntityPacket entityPacket = (UpdateEntityPacket) PacketHandler.buildPacket(PacketHandler.PACKET_UPDATE_ENTITY);
+					entityPacket.setEntityID(4);
+					entityPacket.setPosition(bueno.getPosition());
+					
+					conn.send(entityPacket);
+				}
 			}
 		}
 	}

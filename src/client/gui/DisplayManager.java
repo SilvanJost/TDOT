@@ -33,11 +33,6 @@ public class DisplayManager {
 		frame.setUndecorated(true);
 		frame.setFocusable(true);
 		
-		canvas = new Canvas();
-	
-		canvas.setSize(new Dimension(width, height));
-		canvas.setVisible(true);
-		
 		panel = new JPanel();
 
 		panel.setLayout(null);
@@ -46,7 +41,6 @@ public class DisplayManager {
 		
 		frame.setVisible(true);
 		
-		frame.add(canvas);
 		frame.add(panel);
 	}
 	
@@ -64,6 +58,26 @@ public class DisplayManager {
 		frame.dispose();
 		
 		frame = null;
+	}
+	
+	public static void removePanel(){
+		frame.remove(panel);
+		frame.validate();
+	}
+	
+	public static void initCanvas(){
+		
+		canvas = new Canvas();
+		
+		canvas.setSize(new Dimension(width, height));
+		canvas.setVisible(true);
+		
+		frame.add(canvas);
+	}
+	
+	public static void clearPanel(){
+		
+		panel.removeAll();
 	}
 	
 	public static Canvas getCanvas(){

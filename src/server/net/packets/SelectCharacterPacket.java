@@ -18,7 +18,6 @@ public class SelectCharacterPacket extends Packet{
 
 	@Override
 	public void execute(Connection conn) {
-
 		conn.setCharacter(Integer.parseInt(data));
 	}
 	

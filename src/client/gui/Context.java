@@ -5,11 +5,9 @@ import java.awt.Graphics2D;
 import client.main.ClientKernel;
 
 public abstract class Context {
-
-	protected ClientKernel kernel;
 	
-	public Context(ClientKernel kernel){
-		this.kernel = kernel;
+	public Context(){
+
 	}
 	
 	public abstract void init();

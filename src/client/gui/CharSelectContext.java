@@ -14,14 +14,16 @@ public class CharSelectContext extends Context{
 
 	private int selectedChar = 0;
 	
-	public CharSelectContext(ClientKernel kernel) {
-		super(kernel);
+	public CharSelectContext() {
 		
 	}
 
 	@Override
 	public void init() {
 		
+		System.out.println("AYYE");
+		
+		DisplayManager.destroyDispaly();
 		DisplayManager.createDisplay(ClientKernel.RESOLUTION);
 		
 		JPanel panel = DisplayManager.getPanel();
@@ -39,6 +41,7 @@ public class CharSelectContext extends Context{
 		});
 		
 		appliCard.setVisible(true);
+		appliCard.setText("APPLI");
 		panel.add(appliCard);
 		
 		
@@ -55,6 +58,7 @@ public class CharSelectContext extends Context{
 		});
 		
 		systemerCard.setVisible(true);
+		systemerCard.setText("SYSTEMER");
 		panel.add(systemerCard);
 		
 		
@@ -71,6 +75,7 @@ public class CharSelectContext extends Context{
 		});
 		
 		betrieblerCard.setVisible(true);
+		betrieblerCard.setText("BETRIEBLER");
 		panel.add(betrieblerCard);
 		
 		
@@ -87,6 +92,11 @@ public class CharSelectContext extends Context{
 			}
 			
 		});
+		submitButton.setVisible(true);
+		submitButton.setText("Lock");
+		panel.add(submitButton);
+		
+		panel.validate();
 	}
 
 	@Override

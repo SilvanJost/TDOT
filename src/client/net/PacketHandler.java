@@ -8,6 +8,7 @@ import client.net.packets.Packet;
 import client.net.packets.SelectCharacterPacket;
 import client.net.packets.SetStatePacket;
 import client.net.packets.SetWorldPacket;
+import client.net.packets.UpdateEntityPacket;
 import client.net.packets.UpdatePlayerPacket;
 
 public class PacketHandler {
@@ -18,6 +19,7 @@ public class PacketHandler {
 	public static final int PACKET_SET_WORLD = 4;
 	public static final int PACKET_SELECT_CHARACTER = 5;
 	public static final int PACKET_SET_STATE = 6;
+	public static final int PACKET_UPDATE_ENTITY = 7;
 	
 	public static Packet[] packets = new Packet[32];
 	
@@ -28,6 +30,7 @@ public class PacketHandler {
 		packets[PACKET_SET_WORLD] = new SetWorldPacket();
 		packets[PACKET_SELECT_CHARACTER] = new SelectCharacterPacket();
 		packets[PACKET_SET_STATE] = new SetStatePacket();
+		packets[PACKET_UPDATE_ENTITY] = new UpdateEntityPacket();
 	}
 	
 	public static Packet buildPacket(int id, String senderIP, String data){

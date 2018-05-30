@@ -63,4 +63,8 @@ public class InputHandler {
 	public void setPunchPressed(boolean flag){
 		this.punchKeyPressed = flag;
 	}
+	
+	public void setThrowPressed(boolean flag){
+		this.throwKeyPressed = flag;
+	}
 }

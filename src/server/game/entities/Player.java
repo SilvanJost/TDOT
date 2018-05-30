@@ -22,30 +22,42 @@ public abstract class Player extends Entity{
 	protected int health;
 	protected int speed;
 	
-	protected long tossStart;
-	
 	protected Projectile throwable;
 	
-	protected boolean hasBueno = false;
+	private long pullStart;
+	private boolean isPulling;
+	
+	protected boolean hasBueno = true;
 	
 	protected int lives = 3;
 	
-	public Player(int health, int speed){
+	public Player(int health, int speed, Projectile throwable){
 		
 		this.health = health;
 		this.speed = speed;
+		this.throwable = throwable;
 	}
 	
 	public abstract void punch(List<Player> players);
-	
-	public abstract void toss(List<Player> players);
 	
 	public abstract void useSuper(List<Player> players);
 	
 	public abstract void tickAbilities(List<Entity> entities, List<Player> players);
 	
+	public void toss(){
+		
+		if(isPulling){
+			throwable.toss(this, System.currentTimeMillis() - pullStart);
+			isPulling = false;
+		}
+	}
+	
 	public void loadToss(){
-		tossStart = System.currentTimeMillis();
+		
+		if(!isPulling){
+			pullStart = System.currentTimeMillis();
+			isPulling = true;
+		}
 	}
 	
 	public void collectBueno(){
@@ -90,5 +102,13 @@ public abstract class Player extends Entity{
 
 	public void setAnimationId(int animationId) {
 		this.animationId = animationId;
+	}
+	
+	public Projectile getThrowable() {
+		return throwable;
+	}
+
+	public void setThrowable(Projectile throwable) {
+		this.throwable = throwable;
 	}
 }

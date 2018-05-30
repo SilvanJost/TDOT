@@ -28,9 +28,11 @@ public class Player extends Entity{
     private Animation jump = Assets.appiJump;
     private Animation punch = Assets.appiPunch;
     private Animation toss;
-    private Animation superCast;
+    private Animation superCast = Assets.appiSuper;
     
     private Animation currentAnimation = run;
+    
+    private Animation beamAnimation = Assets.appiBeam;
     
 	public Player(int xPosition, int yPosition) {
 		super(Assets.player,WIDTH,HEIGHT,xPosition,yPosition);
@@ -61,10 +63,10 @@ public class Player extends Entity{
 			}
 		}
 		currentAnimation.tick();
+		//beamAnimation.tick();
 		
 		currentAnimation.setX(position.getX());
 		currentAnimation.setY(position.getY());
-		
 		
 		this.sprite = currentAnimation.getFrame();
 	}
@@ -89,6 +91,15 @@ public class Player extends Entity{
 			g.drawImage(sprite, position.getX() + width, position.getY(), -width, height, null);
 		}
 		
+		/*
+		if(beamAnimation.isActive()){
+			if(direction == RIGHT){
+				g.drawImage(beamAnimation.getFrame(), beamAnimation.getX(), beamAnimation.getY(), beamAnimation.getWidth(), beamAnimation.getHeight(), null);
+			}else{
+				g.drawImage(beamAnimation.getFrame(), beamAnimation.getX() + beamAnimation.getWidth(), beamAnimation.getY(), -beamAnimation.getWidth(), beamAnimation.getHeight(), null);
+			}
+		}*/
+		
 		g.setColor(Color.RED);
 		g.fillRect(this.position.getX()-20, this.position.getY()-50, 150, 5);
 		
@@ -99,6 +110,16 @@ public class Player extends Entity{
 	public void punch(){
 		this.currentAnimation = punch;
 		currentAnimation.run();
+	}
+	
+	public void castSuper(){
+		this.currentAnimation = superCast;
+		currentAnimation.run();
+		
+		beamAnimation.run();
+		
+		beamAnimation.setX(position.getX());
+		beamAnimation.setY(position.getY());
 	}
 	
 	public void setHealth(int health){

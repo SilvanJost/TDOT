@@ -15,8 +15,7 @@ import client.main.ClientKernel;
 
 public class MenuContext extends Context{
 
-	public MenuContext(ClientKernel kernel) {
-		super(kernel);
+	public MenuContext() {
 		
 	}
 

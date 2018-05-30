@@ -12,8 +12,7 @@ import client.main.ClientKernel;
 
 public class WaitingContext extends Context{
 
-	public WaitingContext(ClientKernel kernel) {
-		super(kernel);
+	public WaitingContext() {
 		
 	}
 

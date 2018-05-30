@@ -29,19 +29,22 @@ public class ClientSocket {
 	
 	public void connect(String targetIP, int port){
 		
-		try {
-			
-			/*InetSocketAddress address = new InetSocketAddress(targetIP, port);
-			socket.bind(address);*/
-			
-			socket.connect(new InetSocketAddress("localhost", 8888));
-			
-			writer = new PrintWriter(socket.getOutputStream());
-			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		/*boolean connected = false;;
+		
+		while(!connected){*/
+			try {
+				
+				socket.connect(new InetSocketAddress("localhost", 8888));
+				
+				writer = new PrintWriter(socket.getOutputStream());
+				reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				
+				//connected = true;
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		//}
 	}
 	
 	public void listen(){

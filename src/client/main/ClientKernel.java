@@ -9,9 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import client.assets.Assets;
+import client.entities.Entity;
 import client.entities.Player;
 import client.game.WorldHandler;
+import client.gui.CharSelectContext;
+import client.gui.Context;
 import client.gui.DisplayManager;
+import client.gui.MenuContext;
 import client.input.InputHandler;
 import client.net.ClientSocket;
 import client.net.PacketHandler;
@@ -25,26 +29,36 @@ public class ClientKernel {
 	private static final int SELECTION_STATE = 1;
 	private static final int GAME_STATE = 2;
 	
-	public static final int CHAR_APPLI = 0;
-	public static final int CHAR_SYSTEMER = 1;
-	public static final int CHAR_BETRIEBLER = 2;
+	public static final int CHAR_APPLI = 1;
+	public static final int CHAR_SYSTEMER = 2;
+	public static final int CHAR_BETRIEBLER = 3;
+	
+	public static final int THROWABLE_PHONE = 1;
+	public static final int THROWABLE_KEYBOARD = 2;
+	public static final int THROWABLE_COMPUTER = 3;
+	public static final int ENTITY_BUENO = 4;
 	
 	public static final Vector2 RESOLUTION = new Vector2(1920, 1080);
 	
 	private static int state = MENU_STATE;
+	
+	private static Context context = new MenuContext();
 	
 	private static ClientSocket socket;
 	
 	private BufferStrategy bs;
 	private Graphics2D g;
 	
-	private InputHandler inputHandler;
+	private static InputHandler inputHandler;
+	
+	private int ticks = 0;
 	
 	private static List<Player> players = new ArrayList<Player>();
+	private static List<Entity> entities = new ArrayList<Entity>();
 	
 	private boolean running;
 	
-	private static final int FPS = 60;
+	private static final int FPS = 30;
 	
 	public ClientKernel(){
 		
@@ -73,22 +87,18 @@ public class ClientKernel {
 		WorldHandler.init();
 		PacketHandler.loadPackets();
 		
+		
+		context.init();
+		
+		/*
 		inputHandler = new InputHandler();
-		
-		socket = new ClientSocket();
-		socket.connect("localhost", 8888);
-		
-		socket.listen();
-		
+		DisplayManager.addKeyListener(inputHandler);*/
 		
 		float duration = 1000 / FPS;
 		float delta = 0;
 		
 		double last = System.currentTimeMillis();
 		double now;
-		
-		DisplayManager.createDisplay(new Vector2(1920, 1080));
-		DisplayManager.addKeyListener(inputHandler);
 		
 		while(running){
 			
@@ -98,8 +108,17 @@ public class ClientKernel {
 			
 			if(delta >= duration){
 				
-				tick();
-				render();
+				ticks++;
+				
+				if(state == GAME_STATE){
+					
+					tick();
+					render();
+				}
+				
+				if(ticks >5){
+					entities.clear();
+				}
 				
 				delta = 0;
 			}
@@ -109,9 +128,12 @@ public class ClientKernel {
 	}
 	
 	public void tick(){
+		
 		for(Player player : players){
 			player.tick();
 		}
+		
+		context.tick();
 	}
 	
 	/*
@@ -119,24 +141,34 @@ public class ClientKernel {
 	 * 
 	 * Creates a BufferStrategy and draws everything to the screen with its Graphics object
 	 */
-	public void render(){
+	public synchronized void render(){
+		
 		if(bs == null){
 			DisplayManager.getCanvas().createBufferStrategy(2);
 			bs = DisplayManager.getCanvas().getBufferStrategy();
+				
+		}
 			
-		}
-		
 		g = (Graphics2D) bs.getDrawGraphics();
-
+	
 		DisplayManager.clearDisplay(g);
-		
-		if(WorldHandler.getCurrentWorld() != 0){
-			WorldHandler.render(g);
+			
+		if(state == GAME_STATE){
+			if(WorldHandler.getCurrentWorld() != 0){
+				WorldHandler.render(g);
+			}
+			
+			for(Player player : players){
+				player.render(g);
+			}
+			List<Entity> renderEntities = new ArrayList<Entity>();
+			renderEntities.addAll(entities);
+			for(Entity e : renderEntities){
+				e.render(g);
+			}
 		}
 		
-		for(Player player : players){
-			player.render(g);
-		}
+		context.render(g);
 		
 		bs.show();
 	}
@@ -150,15 +182,17 @@ public class ClientKernel {
 	
 	public static void selectCharacter(int character){
 		
-		if(state == SELECTION_STATE){
-			
-			Packet packet = PacketHandler.buildPacket(PacketHandler.PACKET_SELECT_CHARACTER, null, character+"");
-			socket.send(packet);
-		}
+		SelectCharacterPacket packet = (SelectCharacterPacket) PacketHandler.buildPacket(PacketHandler.PACKET_SELECT_CHARACTER, null, null);
+		packet.setCharacter(character);
+		socket.send(packet);
 	}
 	
 	public static void joinGame(){
 		
+		socket = new ClientSocket();
+		socket.connect("localhost", 8888);
+		
+		socket.listen();
 	}
 	
 	public static void exitToMenu(){
@@ -189,5 +223,32 @@ public class ClientKernel {
 	public static void setState(int s){
 		
 		state = s;
+		
+		switch(state) {
+			case SELECTION_STATE:
+				
+				context = new CharSelectContext();
+				context.init();
+				break;
+			case GAME_STATE:
+				
+				System.out.println("SAAAS");
+				DisplayManager.clearPanel();
+				DisplayManager.removePanel();
+				DisplayManager.initCanvas();
+				
+				inputHandler = new InputHandler();
+				DisplayManager.addKeyListener(inputHandler);
+				
+				break;
+		}
+	}
+	
+	public static void addEntity(Entity e){
+		entities.add(e);
+	}
+	
+	public static Entity getEntity(int entityId){
+		return entities.get(entityId);
 	}
 }

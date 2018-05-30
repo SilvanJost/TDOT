@@ -14,5 +14,8 @@ public class SelectCharacterPacket extends Packet{
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	public void setCharacter(int character){
+		this.data = character+"";
+	}
 }

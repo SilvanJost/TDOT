@@ -5,30 +5,49 @@ import java.util.List;
 import server.geometrics.Collider;
 import server.geometrics.Hitbox;
 import server.main.Game;
+import server.utils.Vector2;
 import server.utils.Vector2f;
 
-public class Projectile{
+public class Projectile extends Entity{
 
-	private int damage;
-	private Vector2f movement;
-	private Vector2f position;
+	public static final int PHONE = 1;
+	public static final int KEYBOARD = 2;
+	public static final int PC = 3;
+	
+	private int id;
+	
+	private float damage;
+	
+	private int pullTime;
+	
+	private Player player;
 	
 	private boolean active = false;
 	
 	private Hitbox hitbox;
 	
-	public Projectile(int damage, int speed){
+	public Projectile(int id, int damage, int speed, int width, int height){
 		
+		this.id = id;
+		this.damage = damage;
+		this.hitbox = new Hitbox(this, width, height, new Vector2(0, 0));
 	}
 	
-	public void toss(Player player){
+	public void toss(Player player, long pullTime){
 		
 		this.position = new Vector2f(player.getPosition().getX(), player.getPosition().getY());
+		this.player = player;
 		
-		if(player.direction == player.LEFT){
-			this.movement = new Vector2f(-player.speed, -2);
+		if(pullTime > 2000){
+			pullTime = 2000;
+		}
+		
+		this.pullTime = (int) pullTime;
+		
+		if(player.direction == Player.LEFT){
+			this.movement = new Vector2f(-player.speed*5, -5);
 		}else{
-			this.movement = new Vector2f(player.speed, -2);
+			this.movement = new Vector2f(player.speed*5, -5);
 		}
 		
 		create();
@@ -36,12 +55,10 @@ public class Projectile{
 	
 	private void create(){
 		active = true;
-		//TODO send Packet
 	}
 	
 	private void destroy(){
 		active = false;
-		//TODO send Packet
 	}
 	
 	public void tick(List<Entity> entities, List<Player> players){
@@ -52,7 +69,9 @@ public class Projectile{
 			
 			if(movement.getY() <= Game.FALLING_CAP){
 				
-				movement.setY(movement.getY() + Game.GRAVITY.getY());
+				movement.setY(movement.getY() + (Game.GRAVITY.getY() * (1.1F - pullTime / 2000)));
+				//System.out.println(Game.GRAVITY.getY() * (1 - pullTime / 2000));
+				System.out.println(1 -pullTime / 2000);
 				
 				if(movement.getY() > Game.FALLING_CAP){
 					movement.setY(Game.FALLING_CAP);
@@ -100,9 +119,52 @@ public class Projectile{
 				}
 			}
 			
+			movement.setX(movement.getX() / 10 * (9.5F + (pullTime / 4000F)));
+			
 			if(hasCollided){
 				destroy();
 			}
+			
+			for(Player player : players){
+				if(player != this.player){
+					if(Collider.getCollision(hitbox, player.getHitbox())){
+						
+						player.dealDamage((int) (damage * (pullTime / 2000F)));
+						
+						if(player.getPosition().getX() < position.getX()){
+							player.setMovementX(-16);
+							player.setMovementY(-16);
+						}else{
+							player.setMovementX(16);
+							player.setMovementY(-16);
+						}
+						
+						destroy();
+						
+					}
+				}
+			}
 		}
+		
+		
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public Vector2f getMovement() {
+		return movement;
+	}
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }
