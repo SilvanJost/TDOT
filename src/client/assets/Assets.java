@@ -49,6 +49,20 @@ public class Assets {
 	public static Animation betriebPunch;
 	public static Animation betriebSuper;
 	
+	//Systemer
+	public static BufferedImage pc;
+	public static BufferedImage sysRun0, sysRun1, sysRun2, sysRun3, sysRun4, sysRun5;
+	public static BufferedImage sysIdle0, sysIdle1;
+	public static BufferedImage sysJump0, sysJump1, sysJump2;
+	public static BufferedImage sysPunch0, sysPunch1;
+	public static BufferedImage sysSpecial0, sysSpecial1;
+	public static BufferedImage sysTicket;
+	
+	public static Animation sysRun;
+	public static Animation sysIdle;
+	public static Animation sysJump;
+	public static Animation sysPunch;
+	public static Animation sysSuper;
 	
 	//GUI
 	
@@ -249,6 +263,68 @@ public class Assets {
 		
 		//END BETRIEBLER-----------------------------------------------------------------
 		
+		//START SYSTEMER-----------------------------------------------------------------
+		pc = imageLoader.loadImage("Desktop.png");
+		
+		sysRun0 = imageLoader.loadImage("Sys_Run_0.png");
+		sysRun1 = imageLoader.loadImage("Sys_Run_1.png");
+		sysRun2 = imageLoader.loadImage("Sys_Run_2.png");
+		sysRun3 = imageLoader.loadImage("Sys_Run_3.png");
+		sysRun4 = imageLoader.loadImage("Sys_Run_4.png");
+		sysRun5 = imageLoader.loadImage("Sys_Run_5.png");
+		
+		BufferedImage[] sysRunImages = new BufferedImage[6];
+		sysRunImages[0] = sysRun0;
+		sysRunImages[1] = sysRun1;
+		sysRunImages[2] = sysRun2;
+		sysRunImages[3] = sysRun3;
+		sysRunImages[4] = sysRun4;
+		sysRunImages[5] = sysRun5;
+		
+		sysRun = new Animation(sysRunImages, 0.7F, 75, 150);
+		
+		sysIdle0 = imageLoader.loadImage("Sys_Idle_0.png");
+		sysIdle1 = imageLoader.loadImage("Sys_Idle_1.png");
+		
+		BufferedImage[] sysIdleImages = new BufferedImage[2];
+		sysIdleImages[0] = sysIdle0;
+		sysIdleImages[1] = sysIdle1;
+		
+		sysIdle = new Animation(sysIdleImages, 0.5F, 75, 150);
+		
+		sysJump0 = imageLoader.loadImage("Sys_Jump_0.png");
+		sysJump1 = imageLoader.loadImage("Sys_Jump_1.png");
+		sysJump2 = imageLoader.loadImage("Sys_Jump_2.png");
+		
+		BufferedImage[] sysJumpImages = new BufferedImage[3];
+		sysJumpImages[0] = sysJump0;
+		sysJumpImages[1] = sysJump1;
+		sysJumpImages[2] = sysJump2;
+		
+		sysJump = new Animation(sysJumpImages, 0.5F, 75, 150);
+		sysJump.setUntilFinished(true);
+		sysJump.setStayAtLast(true);
+		
+		sysPunch0 = imageLoader.loadImage("Sys_Punch_0.png");
+		sysPunch1 = imageLoader.loadImage("Sys_Punch_1.png");
+		
+		BufferedImage[] sysPunchImages = new BufferedImage[2];
+		sysPunchImages[0] = sysPunch0;
+		sysPunchImages[1] = sysPunch1;
+		
+		sysPunch = new Animation(sysPunchImages, 0.15F, 75, 100);
+		sysPunch.setUntilFinished(true);
+		
+		sysSpecial0 = imageLoader.loadImage("Sys_Special_0.png");
+		sysSpecial1 = imageLoader.loadImage("Sys_Special_1.png");
+		
+		BufferedImage[] sysSpecialImages = new BufferedImage[2];
+		sysSpecialImages[0] = sysSpecial0;
+		sysSpecialImages[1] = sysSpecial1;
+		
+		sysSuper = new Animation(sysSpecialImages, 1.5F, 75, 150);
+		sysSuper.setStayAtLast(true);
+		//END SYSTEMER-------------------------------------------------------------------
 		/*START SOUNDS
 		
 		jumpSound = soundLoader.loadSound("jump.mp3");
