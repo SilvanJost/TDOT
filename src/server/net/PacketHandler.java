@@ -10,6 +10,7 @@ import server.net.packets.KeyboardInputPacket;
 import server.net.packets.Packet;
 import server.net.packets.SelectCharacterPacket;
 import server.net.packets.SetStatePacket;
+import server.net.packets.SetUsernamePacket;
 import server.net.packets.SetWorldPacket;
 import server.net.packets.UpdateEntityPacket;
 import server.net.packets.UpdatePlayerPacket;
@@ -23,6 +24,7 @@ public class PacketHandler {
 	public static final int PACKET_SELECT_CHARACTER = 5;
 	public static final int PACKET_SET_STATE = 6;
 	public static final int PACKET_UPDATE_ENTITY = 7;
+	public static final int PACKET_SET_USERNAME = 8;
 	
 	public static Packet[] packets;
 	
@@ -37,6 +39,7 @@ public class PacketHandler {
 		packets[PACKET_SELECT_CHARACTER] = new SelectCharacterPacket();
 		packets[PACKET_SET_STATE] = new SetStatePacket();
 		packets[PACKET_UPDATE_ENTITY] = new UpdateEntityPacket();
+		packets[PACKET_SET_USERNAME] = new SetUsernamePacket();
 		
 	}
 	

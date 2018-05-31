@@ -28,58 +28,75 @@ public class CharSelectContext extends Context{
 		
 		JPanel panel = DisplayManager.getPanel();
 		
-		JButton appliCard = new JButton();
-		appliCard.setBounds(165, 400, 150, 150);
+		final JButton appliCard = new JButton();
+		appliCard.setBounds(165, 400, 225, 317);
+		appliCard.setIcon(Assets.cardAppi);
+		appliCard.setVisible(true);
+		appliCard.setText("APPLI");
+		panel.add(appliCard);
+		
+		
+		final JButton systemerCard = new JButton();
+		systemerCard.setBounds(415, 400, 225, 317);
+		systemerCard.setIcon(Assets.cardSystemer);
+		systemerCard.setVisible(true);
+		systemerCard.setText("SYSTEMER");
+		panel.add(systemerCard);
+		
+		
+		final JButton betrieblerCard = new JButton();
+		betrieblerCard.setBounds(665, 400, 225, 317);
+		betrieblerCard.setIcon(Assets.cardBetriebler);
+		betrieblerCard.setVisible(true);
+		betrieblerCard.setText("BETRIEBLER");
+		panel.add(betrieblerCard);
+		
+		//          START ACTIONS
 		appliCard.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
 				selectedChar = ClientKernel.CHAR_APPLI;
+				
+				appliCard.setEnabled(false);
+				systemerCard.setEnabled(true);
+				betrieblerCard.setEnabled(true);
 			}
 			
 		});
 		
-		appliCard.setVisible(true);
-		appliCard.setText("APPLI");
-		panel.add(appliCard);
-		
-		
-		JButton systemerCard = new JButton();
-		systemerCard.setBounds(415, 400, 150, 150);
 		systemerCard.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
 				selectedChar = ClientKernel.CHAR_SYSTEMER;
+				
+				appliCard.setEnabled(true);
+				systemerCard.setEnabled(false);
+				betrieblerCard.setEnabled(true);
 			}
 			
 		});
 		
-		systemerCard.setVisible(true);
-		systemerCard.setText("SYSTEMER");
-		panel.add(systemerCard);
-		
-		
-		JButton betrieblerCard = new JButton();
-		betrieblerCard.setBounds(665, 400, 150, 150);
 		betrieblerCard.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
 				selectedChar = ClientKernel.CHAR_BETRIEBLER;
+				
+				appliCard.setEnabled(true);
+				systemerCard.setEnabled(true);
+				betrieblerCard.setEnabled(false);
 			}
 			
 		});
 		
-		betrieblerCard.setVisible(true);
-		betrieblerCard.setText("BETRIEBLER");
-		panel.add(betrieblerCard);
+		//          STOP ACTIONS
 		
-		
-		JButton submitButton = new JButton();
+		final JButton submitButton = new JButton();
 		submitButton.setBounds(760, 800, 400, 100);
 		submitButton.addActionListener(new ActionListener(){
 
@@ -88,6 +105,7 @@ public class CharSelectContext extends Context{
 
 				if(selectedChar != 0){
 					ClientKernel.selectCharacter(selectedChar);
+					submitButton.setEnabled(false);
 				}
 			}
 			

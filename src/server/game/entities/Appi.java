@@ -32,7 +32,7 @@ public class Appi extends Player{
 	private Hitbox beamHitboxLeft;
 	
 	public Appi() {
-		super(150, 3, new Projectile(Projectile.KEYBOARD, 25, 7, 60, 30));
+		super(80, 3, new Projectile(Projectile.KEYBOARD, 25, 7, 60, 30));
 		
 		punchHitbox = new Hitbox(this, 75, 150, new Vector2(0, 0));
 		beamHitboxRight = new Hitbox(this, 2000, 75, new Vector2(75, 50));
@@ -44,6 +44,10 @@ public class Appi extends Player{
 		now = System.currentTimeMillis();
 		
 		throwable.tick(entities, players);
+		
+		if(position.getY() > 1080){
+			dealDamage(999);
+		}
 		
 		if(!canPunch){
 			punchTimer += now-last;
@@ -98,11 +102,11 @@ public class Appi extends Player{
 						
 						player.dealDamage(5);
 						if(player.getPosition().getX() < position.getX()){
-							player.setMovementX(-16);
-							player.setMovementY(-16);
+							player.setMovementX(-20);
+							player.setMovementY(-20);
 						}else{
-							player.setMovementX(16);
-							player.setMovementY(-16);
+							player.setMovementX(20);
+							player.setMovementY(-20);
 						}
 					
 					}

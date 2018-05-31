@@ -1,7 +1,6 @@
-package server.net.packets;
+package client.net.packets;
 
-import server.net.Connection;
-import server.net.PacketHandler;
+import client.net.PacketHandler;
 
 public class SetUsernamePacket extends Packet{
 
@@ -11,17 +10,13 @@ public class SetUsernamePacket extends Packet{
 	}
 
 	@Override
-	public Packet getAnswer() {
+	public void execute() {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void execute(Connection conn) {
-
-		conn.setUsername(data);
 		
 	}
-
 	
+	public void setUsername(String username){
+		
+		data = username;
+	}
 }

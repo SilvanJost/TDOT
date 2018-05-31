@@ -15,6 +15,8 @@ public class GameHandler {
 	
 	private static List<Game> games = new ArrayList<Game>();
 	
+	private static List<Game> toTerminate = new ArrayList<Game>();
+	
 	public GameHandler(){
 		
 	}
@@ -31,7 +33,6 @@ public class GameHandler {
 			if(games.get(i).getPlayerCount() < Game.MAX_PLAYERS){
 				
 				games.get(i).join(conn);
-				games.get(i).addPlayer(conn);
 				return;
 			}
 		}
@@ -40,9 +41,10 @@ public class GameHandler {
 			
 			Game game = new Game();
 			game.join(conn);
-			game.addPlayer(conn);
 			
 			games.add(game);
+			
+			game.setGameID(games.indexOf(game));
 			
 			System.out.println("Created new Game");
 		}
@@ -51,8 +53,18 @@ public class GameHandler {
 	public static synchronized void tick(){
 		
 		for(Game game : games){
-			game.tick();
+			if(game.isRunning()){
+				game.tick();
+			}else{
+				toTerminate.add(game);
+			}
 		}
+		
+		for(Game game : toTerminate){
+			games.remove(game);
+		}
+		
+		toTerminate.clear();
 	}
 	
 	public static synchronized void update(){
@@ -68,5 +80,9 @@ public class GameHandler {
 	
 	public Game getGame(int id){
 		return games.get(id );
+	}
+	
+	public static void remove(int gameID){
+		games.remove(gameID);
 	}
 }

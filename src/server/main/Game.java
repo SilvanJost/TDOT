@@ -9,6 +9,7 @@ import server.game.entities.Player;
 import server.geometrics.Collider;
 import server.geometrics.Hitbox;
 import server.game.entities.Appi;
+import server.game.entities.Betriebler;
 import server.net.Connection;
 import server.net.InputHandler;
 import server.net.PacketHandler;
@@ -30,10 +31,16 @@ public class Game {
 	public static final int IDLE_STATE = 0;
 	public static final int SELECTION_STATE = 1;
 	public static final int GAME_STATE = 2;
+	public static final int OVERVIEW_STATE = 3;
 	
-	public static final int CHAR_APPLI = 0;
-	public static final int CHAR_SYSTEMER = 1;
-	public static final int CHAR_BETRIEBLER = 2;
+	public static final int CHAR_APPLI = 1;
+	public static final int CHAR_SYSTEMER = 2;
+	public static final int CHAR_BETRIEBLER = 3;
+	
+	public static final int ENTITY_BUENO = 4;
+	public static final int ENTITY_TICKET = 5;
+	
+	private boolean running;
 	
 	private int state = IDLE_STATE;
 	
@@ -56,150 +63,159 @@ public class Game {
 	public Game(){
 		
 		random = new Random();
+		
+		running = true;
 	}
 	
 	/*
 	 * When a connection joins, it gets all information sent
 	 */
-	public void join(Connection conn){
+	public void join(Connection c){
 		
-		connections.add(conn);
-		
-		for(Player player : players){
-			
-			Packet packet = PacketHandler.buildPacket(PacketHandler.PACKET_ADD_PLAYER);
-			
-			conn.send(packet);
-		}
+		connections.add(c);
 		
 		SetWorldPacket packet = (SetWorldPacket) PacketHandler.buildPacket(PacketHandler.PACKET_SET_WORLD);
 		packet.setWorld(1);
 		System.out.println(packet.buildMessage());
 		
-		conn.send(packet);
+		c.send(packet);
 	}
 	
-	public void addPlayer(Connection conn){
+	public void initPlayers(){
 		
-		Player player = new Appi();
-		player.setPosition(new Vector2f(500,400));
-		players.add(player);
-		
-		conn.setPlayerID(players.indexOf(player));
-		player.setConnectionId(connections.indexOf(conn));
-		
-		AddPlayerPacket packet = (AddPlayerPacket) PacketHandler.buildPacket(PacketHandler.PACKET_ADD_PLAYER);
-		
-		for(Connection connection : connections){
-			connection.send(packet);
+		for(Connection conn : connections){
+			
+			Player player = null;
+			
+			switch(conn.getCharacter()){
+				case CHAR_APPLI:
+					player = new Appi();
+					break;
+				case CHAR_SYSTEMER:
+					
+					break;
+				default:
+					player = new Betriebler();
+					break;
+			}
+			
+			player.setPosition(new Vector2f(500,400));
+			players.add(player);
+			
+			conn.setPlayerID(players.indexOf(player));
+			player.setConnectionId(connections.indexOf(conn));
+			
+			AddPlayerPacket packet = (AddPlayerPacket) PacketHandler.buildPacket(PacketHandler.PACKET_ADD_PLAYER);
+			packet.setID(conn.getCharacter());
+			packet.setUsername(conn.getUsername());
+			
+			for(Connection connection : connections){
+				connection.send(packet);
+			}
 		}
 	}
 	
-	public void tick(){
+	public synchronized void tick(){
 		
-		if(state == IDLE_STATE){
-			
-			if(connections.size() == MAX_PLAYERS){
+		try{
+		
+			if(state == IDLE_STATE){
 				
-				state = SELECTION_STATE;
+				if(connections.size() == MAX_PLAYERS){
+					
+					state = SELECTION_STATE;
+					
+					SetStatePacket setStatePacket = (SetStatePacket) PacketHandler.buildPacket(PacketHandler.PACKET_SET_STATE);
+					setStatePacket.setData(SELECTION_STATE+"");
+					
+					for(Connection conn : connections){
+						
+						conn.send(setStatePacket);
+						
+					}
+				}
 				
-				SetStatePacket setStatePacket = (SetStatePacket) PacketHandler.buildPacket(PacketHandler.PACKET_SET_STATE);
-				setStatePacket.setData(SELECTION_STATE+"");
+			}else if(state == SELECTION_STATE){
+				
+				boolean picked = true;
+				
+				for(Connection conn : connections){
+					if(conn.getCharacter() == 0){
+						picked = false;
+					}
+					
+					if(!conn.isActive()){
+						end();
+					}
+				}
+				
+				if(picked){
+					
+					initPlayers();
+					
+					state = GAME_STATE;
+					System.out.println("Starting Game "+gameID);
+					
+					SetStatePacket setStatePacket = (SetStatePacket) PacketHandler.buildPacket(PacketHandler.PACKET_SET_STATE);
+					setStatePacket.setData(GAME_STATE+"");
+					
+					for(Connection conn : connections){
+						
+						conn.send(setStatePacket);
+						
+					}
+				}
+				
+			}else if(state == GAME_STATE){
+				
 				
 				for(Connection conn : connections){
 					
-					conn.send(setStatePacket);
+					InputHandler handler = conn.getInputHandler();
 					
-				}
-			}
-			
-		}else if(state == SELECTION_STATE){
-			
-			boolean picked = true;
-			
-			for(Connection conn : connections){
-				if(conn.getCharacter() == 0){
-					picked = false;
-				}
-				
-				if(!conn.isActive()){
-					end();
-				}
-			}
-			
-			if(picked){
-				
-				state = GAME_STATE;
-				System.out.println("Starting Game "+gameID);
-				
-				SetStatePacket setStatePacket = (SetStatePacket) PacketHandler.buildPacket(PacketHandler.PACKET_SET_STATE);
-				setStatePacket.setData(GAME_STATE+"");
-				
-				for(Connection conn : connections){
+					//players.get(conn.getPlayerID()).setMovementX(0);
 					
-					conn.send(setStatePacket);
+					if(handler.isLeftPressed()){
+						
+						players.get(conn.getPlayerID()).move(-7);
+					}
 					
-				}
-			}
-			
-		}else if(state == GAME_STATE){
-			
-			
-			for(Connection conn : connections){
-				
-				InputHandler handler = conn.getInputHandler();
-				
-				//players.get(conn.getPlayerID()).setMovementX(0);
-				
-				if(handler.isLeftPressed()){
+					if(handler.isRightPressed()){
+						
+						players.get(conn.getPlayerID()).move(7);
+						
+					}
 					
-					players.get(conn.getPlayerID()).move(-7);
-				}
-				
-				if(handler.isRightPressed()){
+					if(handler.isUpPressed()){
+						players.get(conn.getPlayerID()).jump();
+						handler.setUpPressed(false);
+					}
 					
-					players.get(conn.getPlayerID()).move(7);
+					if(handler.isPunchPressed()){
+						players.get(conn.getPlayerID()).punch(players);
+						handler.setPunchPressed(false);
+					}
 					
+					if(handler.isThrowPressed()){
+						players.get(conn.getPlayerID()).loadToss();
+					}else{
+						players.get(conn.getPlayerID()).toss();
+					}
+					
+					if(handler.isSpecialPressed()){
+						players.get(conn.getPlayerID()).useSuper(players);
+					}
 				}
 				
-				if(handler.isUpPressed()){
-					players.get(conn.getPlayerID()).jump();
-					handler.setUpPressed(false);
-				}
-				
-				if(handler.isPunchPressed()){
-					players.get(conn.getPlayerID()).punch(players);
-					handler.setPunchPressed(false);
-				}
-				
-				if(handler.isThrowPressed()){
-					players.get(conn.getPlayerID()).loadToss();
-				}else{
-					players.get(conn.getPlayerID()).toss();
-				}
-				
-				if(handler.isSpecialPressed()){
-					players.get(conn.getPlayerID()).useSuper(players);
-				}
-			}
-			
-			List<Entity> entities = Parser.parsePlayerList(players);
-			
-			for(Entity bueno : buenos){
-				bueno.tick(WorldHandler.getWorld(WorldHandler.SKYLINE).getStructures());
-			}
-			
-			for(Player player : players){
-				player.tick(WorldHandler.getWorld(WorldHandler.SKYLINE).getStructures());
-				player.tickAbilities(WorldHandler.getWorld(WorldHandler.SKYLINE).getStructures(), players);
+				List<Entity> entities = Parser.parsePlayerList(players);
 				
 				List<Entity> toRemove = new ArrayList<Entity>();
 				
 				for(Entity bueno : buenos){
-					if(Collider.getCollision(player.getHitbox(), bueno.getHitbox())){
-						
-						player.collectBueno();
-						
+					bueno.tick(WorldHandler.getWorld(WorldHandler.SKYLINE).getStructures());
+					
+					if(bueno.getPosition().getY() > 1080){
+	
 						toRemove.add(bueno);
 					}
 				}
@@ -209,14 +225,49 @@ public class Game {
 					buenos.remove(e);
 					
 				}
+				
+				toRemove.clear();
+				
+				int deaths = 0;
+				
+				for(Player player : players){
+					player.tick(WorldHandler.getWorld(WorldHandler.SKYLINE).getStructures());
+					player.tickAbilities(WorldHandler.getWorld(WorldHandler.SKYLINE).getStructures(), players);
+					
+					for(Entity bueno : buenos){
+						if(Collider.getCollision(player.getHitbox(), bueno.getHitbox())){
+							
+							player.collectBueno();
+							
+							toRemove.add(bueno);
+						}
+					}
+					
+					for(Entity e : toRemove){
+						
+						buenos.remove(e);
+						
+					}
+					
+					if(player.getLives() < 1){
+						deaths ++;
+					}
+				}
+				
+				if(deaths >= players.size() - 1){
+					end();
+				}
+				
+				if(random.nextInt(buenoChance) == 0){
+					Entity bueno = new Entity();
+					bueno.setPosition(new Vector2f(random.nextInt(1920), 50));
+					bueno.setHitbox(new Hitbox(bueno, 60, 60, new Vector2(0, 0)));
+					buenos.add(bueno);
+				}
 			}
-			
-			if(random.nextInt(buenoChance) == 0){
-				Entity bueno = new Entity();
-				bueno.setPosition(new Vector2f(random.nextInt(1920), 50));
-				bueno.setHitbox(new Hitbox(bueno, 60, 60, new Vector2(0, 0)));
-				buenos.add(bueno);
-			}
+		}catch(Exception e){
+			e.printStackTrace();
+			end();
 		}
 	}
 	
@@ -225,44 +276,62 @@ public class Game {
 	 */
 	public void update(){
 		
-		for(Connection conn : connections){
-			
-			for(int i=0;i<players.size();i++){
+		try{
+		
+			for(Connection conn : connections){
 				
-				Player player = players.get(i);
-				
-				UpdatePlayerPacket packet = (UpdatePlayerPacket) PacketHandler.buildPacket(02, null, null);
-				packet.setPosition(player.getPosition());
-				packet.setPlayerID(i);
-				
+				for(int i=0;i<players.size();i++){
 					
-				packet.setAnimation(player.getAnimationId());
+					Player player = players.get(i);
 					
-				player.setAnimationId(Player.NONE);
-				
-				packet.setHealth(player.getHealth());
-				
-				conn.send(packet);
-				
-				 //UPDATES ENTITIES----------------------------------------------------------------------------
-				UpdateEntityPacket entityPacket = (UpdateEntityPacket) PacketHandler.buildPacket(PacketHandler.PACKET_UPDATE_ENTITY);
-				
-				if(player.getThrowable().isActive()){
+					UpdatePlayerPacket packet = (UpdatePlayerPacket) PacketHandler.buildPacket(02, null, null);
+					packet.setPosition(player.getPosition());
+					packet.setPlayerID(i);
 					
-					entityPacket.addEntity(player.getThrowable().getId(), player.getThrowable().getPosition());
+						
+					packet.setAnimation(player.getAnimationId());
+						
+					player.setAnimationId(Player.NONE);
+					
+					packet.setHealth(player.getHealth());
+					
+					conn.send(packet);
+					
+					 //UPDATES ENTITIES----------------------------------------------------------------------------
+					UpdateEntityPacket entityPacket = (UpdateEntityPacket) PacketHandler.buildPacket(PacketHandler.PACKET_UPDATE_ENTITY);
+					
+					if(player.getThrowable().isActive()){
+						
+						entityPacket.addEntity(player.getThrowable().getId(), player.getThrowable().getPosition());
+					}
+					
+					for(Player p : players){
+						if(p instanceof Betriebler){
+							
+							Betriebler b = (Betriebler) p;
+							
+							if(b.isTicketActive()){
+								entityPacket.addEntity(ENTITY_TICKET, b.getTicket().getPosition());
+							}
+						}
+					}
+					
+					for(Entity bueno : buenos){
+						
+						entityPacket.addEntity(ENTITY_BUENO, bueno.getPosition());
+					}
+					if(entityPacket.getLength() > 0){
+						conn.send(entityPacket);
+					}
+					
+					entityPacket.clear();
+					//----------------------------------------------------------------------------------------------
 				}
-				
-				for(Entity bueno : buenos){
-					
-					entityPacket.addEntity(4, bueno.getPosition());
-				}
-				if(entityPacket.getLength() > 0){
-					conn.send(entityPacket);
-				}
-				
-				entityPacket.clear();
-				//----------------------------------------------------------------------------------------------
 			}
+		}catch(Exception e){
+			e.printStackTrace();
+			System.err.println("An Error has occured");
+			end();
 		}
 	}
 	
@@ -281,6 +350,16 @@ public class Game {
 			Packet packet = PacketHandler.buildPacket(6, null, MENU_STATE+"");
 			conn.send(packet);
 		}
+		System.out.println("Stopped Game "+gameID);
 		
+		running = false;
+	}
+	
+	public void setGameID(int gameID){
+		this.gameID = gameID;
+	}
+	
+	public boolean isRunning(){
+		return this.running;
 	}
 }

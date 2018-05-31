@@ -7,6 +7,7 @@ import client.net.packets.KeyboardInputPacket;
 import client.net.packets.Packet;
 import client.net.packets.SelectCharacterPacket;
 import client.net.packets.SetStatePacket;
+import client.net.packets.SetUsernamePacket;
 import client.net.packets.SetWorldPacket;
 import client.net.packets.UpdateEntityPacket;
 import client.net.packets.UpdatePlayerPacket;
@@ -20,6 +21,7 @@ public class PacketHandler {
 	public static final int PACKET_SELECT_CHARACTER = 5;
 	public static final int PACKET_SET_STATE = 6;
 	public static final int PACKET_UPDATE_ENTITY = 7;
+	public static final int PACKET_SET_USERNAME = 8;
 	
 	public static Packet[] packets = new Packet[32];
 	
@@ -31,6 +33,7 @@ public class PacketHandler {
 		packets[PACKET_SELECT_CHARACTER] = new SelectCharacterPacket();
 		packets[PACKET_SET_STATE] = new SetStatePacket();
 		packets[PACKET_UPDATE_ENTITY] = new UpdateEntityPacket();
+		packets[PACKET_SET_USERNAME] = new SetUsernamePacket();
 	}
 	
 	public static Packet buildPacket(int id, String senderIP, String data){

@@ -23,16 +23,20 @@ public class AddPlayerPacket extends Packet{
 		// TODO Auto-generated method stub
 		
 	}
-
-	public String buildPacket(){
+	
+	@Override
+	public String buildMessage(){
 		
 		data = playerID+","+username;
 		
+		
+		System.out.println("DATA "+data);
 		return this.packetID + data;
 	}
 	
 	public void setID(int id){
 		this.playerID = id;
+		System.out.println(playerID);
 	}
 	
 	public void setUsername(String username){

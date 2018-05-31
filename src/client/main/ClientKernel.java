@@ -21,6 +21,7 @@ import client.net.ClientSocket;
 import client.net.PacketHandler;
 import client.net.packets.Packet;
 import client.net.packets.SelectCharacterPacket;
+import client.net.packets.SetUsernamePacket;
 import client.utils.Vector2;
 
 public class ClientKernel {
@@ -51,14 +52,12 @@ public class ClientKernel {
 	
 	private static InputHandler inputHandler;
 	
-	private int ticks = 0;
-	
 	private static List<Player> players = new ArrayList<Player>();
 	private static List<Entity> entities = new ArrayList<Entity>();
 	
 	private boolean running;
 	
-	private static final int FPS = 20;
+	private static final int FPS = 40;
 	
 	public ClientKernel(){
 		
@@ -105,19 +104,18 @@ public class ClientKernel {
 			now = System.currentTimeMillis();
 			
 			delta += now - last;
-
+			
 			if(delta >= duration){
-				ticks++;
-				System.out.println(1);
+				
 				if(state == GAME_STATE){
-					System.out.println(2);
 					tick();
-					System.out.println(3);
 					render();
 				}
 				
 				delta = 0;
 			}
+			
+			last = now;
 		}
 		
 		stop();
@@ -126,7 +124,9 @@ public class ClientKernel {
 	public void tick(){
 		
 		for(Player player : players){
-			player.tick();
+			if(player != null){
+				player.tick();
+			}
 		}
 		
 		context.tick();
@@ -188,12 +188,16 @@ public class ClientKernel {
 		socket.send(packet);
 	}
 	
-	public static void joinGame(){
+	public static void joinGame(String username){
 		
 		socket = new ClientSocket();
 		socket.connect("localhost", 8888);
 		
 		socket.listen();
+		
+		SetUsernamePacket packet = (SetUsernamePacket) PacketHandler.buildPacket(PacketHandler.PACKET_SET_USERNAME, null, null);
+		packet.setUsername(username);
+		socket.send(packet);
 	}
 	
 	public static void exitToMenu(){
@@ -221,13 +225,13 @@ public class ClientKernel {
 		return players.get(playerID);
 	}
 	
-	public synchronized static void setState(int s){
+	public static void setState(int s){
 		
 		state = s;
 		
 		switch(state) {
 			case SELECTION_STATE:
-				
+				System.out.println("SWITCHED TO SELECTION");
 				context = new CharSelectContext();
 				context.init();
 				break;
@@ -246,11 +250,11 @@ public class ClientKernel {
 		}
 	}
 	
-	public synchronized static void addEntity(Entity e){
+	public static void addEntity(Entity e){
 		entities.add(e);
 	}
 	
-	public synchronized static void clearEntities(){
+	public static void clearEntities(){
 		entities.clear();
 	}
 	

@@ -33,7 +33,7 @@ public class SocketListener implements Runnable{
 				
 				line = reader.readLine();
 				if(line != null){
-					
+
 					int packetID = Integer.parseInt(line.substring(0, 1));
 					String data = line.substring(1);
 					

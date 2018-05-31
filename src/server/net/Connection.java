@@ -26,6 +26,8 @@ public class Connection {
 	
 	private int selectedCharacter;
 	
+	private String username;
+	
 	private int gameID;
 	private int playerID;
 	
@@ -73,6 +75,14 @@ public class Connection {
 		writer.println(message);
 		
 		writer.flush();
+	}
+	
+	public String getUsername(){
+		return this.username;
+	}
+	
+	public void setUsername(String name){
+		this.username = name;
 	}
 	
 	public void setGameID(int gameID){
