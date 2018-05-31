@@ -32,10 +32,6 @@ public class UpdateEntityPacket extends Packet{
 	 
 	 public void addEntity(int entityID, Vector2f position){
 		 
-		 if(data == null){
-			 data = "";
-		 }
-		 
 		 data += entityID + "," + position.getX() + "," + position.getY()+"/";
 		 entities ++;
 	 }

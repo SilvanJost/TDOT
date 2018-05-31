@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import client.assets.Assets;
 import client.utils.Animation;
 
-public class Player extends Entity{
+public abstract class Player extends Entity{
 
     private static final int HEIGHT = 150;
     private static final int WIDTH = 75;
@@ -23,16 +23,16 @@ public class Player extends Entity{
     private float maxHealth = 150;
     private float health = 60;
     
-    private Animation idle = Assets.appiIdle;
-    private Animation run = Assets.appiRun;
-    private Animation jump = Assets.appiJump;
-    private Animation punch = Assets.appiPunch;
-    private Animation toss;
-    private Animation superCast = Assets.appiSuper;
+    protected Animation idle = Assets.appiIdle;
+    protected Animation run = Assets.appiRun;
+    protected Animation jump = Assets.appiJump;
+    protected Animation punch = Assets.appiPunch;
+    protected Animation toss;
+    protected Animation superCast = Assets.appiSuper;
     
-    private Animation currentAnimation = run;
+    protected Animation currentAnimation = run;
     
-    private Animation beamAnimation = Assets.appiBeam;
+    //private Animation beamAnimation = Assets.appiBeam;
     
 	public Player(int xPosition, int yPosition) {
 		super(Assets.player,WIDTH,HEIGHT,xPosition,yPosition);
@@ -63,7 +63,6 @@ public class Player extends Entity{
 			}
 		}
 		currentAnimation.tick();
-		beamAnimation.tick();
 		
 		currentAnimation.setX(position.getX());
 		currentAnimation.setY(position.getY());
@@ -91,15 +90,6 @@ public class Player extends Entity{
 			g.drawImage(sprite, position.getX() + width, position.getY(), -width, height, null);
 		}
 		
-		
-		if(beamAnimation.isActive()){
-			if(direction == RIGHT){
-				g.drawImage(beamAnimation.getFrame(), beamAnimation.getX(), beamAnimation.getY(), beamAnimation.getWidth(), beamAnimation.getHeight(), null);
-			}else{
-				g.drawImage(beamAnimation.getFrame(), beamAnimation.getX() + beamAnimation.getWidth(), beamAnimation.getY(), -beamAnimation.getWidth(), beamAnimation.getHeight(), null);
-			}
-		}
-		
 		g.setColor(Color.RED);
 		g.fillRect(this.position.getX()-20, this.position.getY()-50, 150, 5);
 		
@@ -107,21 +97,35 @@ public class Player extends Entity{
 		g.fillRect(this.position.getX()-20, this.position.getY()-50, (int) (health / maxHealth * 150F), 5);
 	}
 	
-	public void punch(){
-		this.currentAnimation = punch;
-		currentAnimation.run();
-	}
+	public abstract void tickAbilities();
 	
-	public void castSuper(){
-		System.out.println("reeee");
-		this.currentAnimation = superCast;
+	//beamAnimation.tick();
+	
+	public abstract void renderAbilities(Graphics2D g);
+	/*
+	if(beamAnimation.isActive()){
+		if(direction == RIGHT){
+			g.drawImage(beamAnimation.getFrame(), beamAnimation.getX(), beamAnimation.getY(), beamAnimation.getWidth(), beamAnimation.getHeight(), null);
+		}else{
+			g.drawImage(beamAnimation.getFrame(), beamAnimation.getX() + beamAnimation.getWidth(), beamAnimation.getY(), -beamAnimation.getWidth(), beamAnimation.getHeight(), null);
+		}
+	}*/
+	
+	public abstract void punch();
+	
+	/*
+		this.currentAnimation = punch;
+		currentAnimation.run();*/
+	
+	public abstract void castSuper();
+		
+		/*this.currentAnimation = superCast;
 		currentAnimation.run();
 		
 		beamAnimation.run();
 		
 		beamAnimation.setX(position.getX());
-		beamAnimation.setY(position.getY());
-	}
+		beamAnimation.setY(position.getY());*/
 	
 	public void setHealth(int health){
 		this.health = health;
